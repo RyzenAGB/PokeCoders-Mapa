@@ -1,15 +1,16 @@
 // ============================================================
-//  PAN + ZOOM — carga el SVG como imagen, hotspots para clics
+//  PAN + ZOOM sobre SVG inline
+//  El SVG tiene pointer-events: none; los clics se capturan
+//  en el contenedor y se traducen a coordenadas SVG.
 // ============================================================
 
-const SVG_W = 2477;
-const SVG_H = 1595;
-const ZOOM_MIN = 0.4;
+const ZOOM_MIN = 0.3;
 const ZOOM_MAX = 6;
 
 let camX = 0, camY = 0, camScale = 1;
 let wasDrag = false;
 
+// ── Aplica la transformación al layer ──
 function applyTransform(animated) {
     const layer = document.getElementById('mapa-layer');
     if (!layer) return;
@@ -19,6 +20,7 @@ function applyTransform(animated) {
     layer.style.transform = `translate(${camX}px,${camY}px) scale(${camScale})`;
 }
 
+// ── Centra la vista en coordenadas SVG ──
 function centrarEn(svgX, svgY, escala, animated) {
     const c = document.getElementById('vista-mapa');
     camScale = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, escala));
@@ -27,12 +29,21 @@ function centrarEn(svgX, svgY, escala, animated) {
     applyTransform(animated);
 }
 
+// ── Zoom desde un punto del contenedor ──
 function zoomAt(cx, cy, factor) {
     const newScale = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, camScale * factor));
     camX = cx - (cx - camX) * (newScale / camScale);
     camY = cy - (cy - camY) * (newScale / camScale);
     camScale = newScale;
     applyTransform(false);
+}
+
+// ── Convierte coordenadas del contenedor → SVG ──
+function containerToSVG(cx, cy) {
+    return {
+        x: (cx - camX) / camScale,
+        y: (cy - camY) / camScale
+    };
 }
 
 // ── Rueda de ratón ──
@@ -70,9 +81,14 @@ function initMousePan() {
         down = false;
         c.style.cursor = 'grab';
     });
+
+    // Cancelar clic si hubo arrastre
+    c.addEventListener('click', e => {
+        if (wasDrag) e.stopPropagation();
+    }, true);
 }
 
-// ── Touch: pan + pinch-zoom ──
+// ── Touch: pan (1 dedo) + pinch-zoom (2 dedos) ──
 function initTouch() {
     const c = document.getElementById('vista-mapa');
     let t2active = false, scx, scy, startMx, startMy, lastDist, moved;
@@ -120,43 +136,62 @@ function initTouch() {
     }, { passive: false });
 }
 
-// ── Hotspots clicables sobre el mapa ──
-// Coordenadas en espacio SVG (x, y, ancho, alto)
-function crearHotspots() {
-    const layer = document.getElementById('mapa-layer');
+// ── Detecta qué edificio fue tocado usando getBBox() ──
+// Convierte el punto del toque a coordenadas SVG y comprueba
+// si cae dentro del bounding box de cada grupo.
+function detectarEdificio(containerX, containerY) {
+    const svgPt = containerToSVG(containerX, containerY);
 
-    const zonas = {
-        "Edificio_A":  { x: 1550, y: 620,  w: 350, h: 280 },
-        "Edificio_B":  { x: 910,  y: 680,  w: 420, h: 260 },
-        "Edificio_C":  { x: 490,  y: 430,  w: 440, h: 280 },
-        "Edificio_E":  { x: 130,  y: 140,  w: 380, h: 340 },
-        "Edificio_F":  { x: 680,  y: 1340, w: 300, h: 230 },
-        "Edificio G":  { x: 60,   y: 860,  w: 510, h: 470 },
-        "Cafetería":   { x: 1260, y: 560,  w: 145, h: 135 },
-        "Baños_Vec":   { x: 1200, y: 870,  w: 200, h: 110 },
-    };
+    for (const id of Object.keys(universidadData)) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        try {
+            const bb = el.getBBox();
+            if (svgPt.x >= bb.x && svgPt.x <= bb.x + bb.width &&
+                svgPt.y >= bb.y && svgPt.y <= bb.y + bb.height) {
+                return id;
+            }
+        } catch(e) { /* elemento no visible aún */ }
+    }
+    return null;
+}
 
-    Object.entries(zonas).forEach(([id, p]) => {
-        if (!universidadData[id]) return;
-        const div = document.createElement('div');
-        div.className = 'mapa-hotspot';
-        div.dataset.id = id;
-        div.style.left   = p.x + 'px';
-        div.style.top    = p.y + 'px';
-        div.style.width  = p.w + 'px';
-        div.style.height = p.h + 'px';
+// ── Clic en el mapa (desktop) ──
+function initMapClick() {
+    const c = document.getElementById('vista-mapa');
+    c.addEventListener('click', e => {
+        if (wasDrag) return;
+        const r = c.getBoundingClientRect();
+        const id = detectarEdificio(e.clientX - r.left, e.clientY - r.top);
+        if (id) mostrarInfo(id);
+    });
+}
 
-        div.addEventListener('click', e => {
-            e.stopPropagation();
-            if (wasDrag) return;
-            mostrarInfo(id);
-        });
-        div.addEventListener('touchend', e => {
-            if (wasDrag) return;
-            e.preventDefault(); e.stopPropagation();
-            mostrarInfo(id);
-        });
-        layer.appendChild(div);
+// ── Tap en el mapa (móvil) ──
+function initMapTap() {
+    const c = document.getElementById('vista-mapa');
+    let tapX, tapY;
+
+    c.addEventListener('touchstart', e => {
+        if (e.touches.length === 1) {
+            tapX = e.touches[0].clientX;
+            tapY = e.touches[0].clientY;
+        }
+    }, { passive: true });
+
+    c.addEventListener('touchend', e => {
+        if (wasDrag) return;
+        if (e.changedTouches.length === 1) {
+            const r = c.getBoundingClientRect();
+            const id = detectarEdificio(
+                e.changedTouches[0].clientX - r.left,
+                e.changedTouches[0].clientY - r.top
+            );
+            if (id) {
+                e.preventDefault();
+                mostrarInfo(id);
+            }
+        }
     });
 }
 
@@ -166,6 +201,7 @@ function crearHotspots() {
 function mostrarInfo(id) {
     const lugar = universidadData[id];
     if (!lugar) { console.warn('Sin datos para:', id); return; }
+
     document.getElementById('info-titulo').innerText = lugar.nombre;
     document.getElementById('info-descripcion').innerHTML = `
         <div class="info-item"><strong>Servicios:</strong> ${lugar.servicios}</div>
@@ -173,6 +209,13 @@ function mostrarInfo(id) {
         <div class="info-item"><strong>Contacto:</strong> ${lugar.contactos}</div>
     `;
     document.getElementById('info-panel').classList.add('visible');
+
+    // Highlight visual en el SVG
+    const el = document.getElementById(id);
+    if (el) {
+        el.classList.add('highlight-lugar');
+        setTimeout(() => el.classList.remove('highlight-lugar'), 2000);
+    }
 }
 
 // ============================================================
@@ -181,21 +224,29 @@ function mostrarInfo(id) {
 function buscarServicio() {
     const input = document.getElementById('buscador').value.toLowerCase().trim();
     if (!input) return;
+
     const id = Object.keys(universidadData).find(id => {
         const d = universidadData[id];
         return d.nombre.toLowerCase().includes(input) ||
                d.palabrasClave.toLowerCase().includes(input);
     });
-    if (id) { mostrarInfo(id); navegarA(id); }
-    else alert('No se encontró: ' + input);
+
+    if (id) {
+        mostrarInfo(id);
+        navegarA(id);
+    } else {
+        alert('No se encontró: ' + input);
+    }
 }
 
+// ── Navega animado al centro de un edificio ──
 function navegarA(id) {
-    const div = document.querySelector(`.mapa-hotspot[data-id="${CSS.escape(id)}"]`);
-    if (!div) return;
-    const cx = parseFloat(div.style.left) + parseFloat(div.style.width)  / 2;
-    const cy = parseFloat(div.style.top)  + parseFloat(div.style.height) / 2;
-    centrarEn(cx, cy, 2.8, true);
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+        const bb = el.getBBox();
+        centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, 2.8, true);
+    } catch(e) {}
 }
 
 // ============================================================
@@ -203,32 +254,30 @@ function navegarA(id) {
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── Reemplazar SVG inline por imagen + layer de hotspots ──
+    // Cursor
     const vistaMapa = document.getElementById('vista-mapa');
-    vistaMapa.innerHTML = '';
-
-    const layer = document.createElement('div');
-    layer.id = 'mapa-layer';
-
-    const img = document.createElement('img');
-    img.src = 'mapa.svg';   // ← el archivo SVG del mapa (renómbralo o ajusta aquí)
-    img.id  = 'svg-mapa';
-    img.draggable = false;
-    img.addEventListener('dragstart', e => e.preventDefault());
-
-    layer.appendChild(img);
-    vistaMapa.appendChild(layer);
-
-    crearHotspots();
-
     vistaMapa.style.cursor = 'grab';
+
+    // Inicializar controles
     initWheel();
     initMousePan();
     initTouch();
+    initMapClick();
+    initMapTap();
 
-    // Vista inicial centrada en Edificio_A
+    // Vista inicial: centrada en Edificio_A
     requestAnimationFrame(() => {
-        centrarEn(1725, 760, 1.8, false); // centro del Edificio_A
+        const edA = document.getElementById('Edificio_A');
+        if (edA) {
+            try {
+                const bb = edA.getBBox();
+                centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, 1.8, false);
+            } catch(e) {
+                centrarEn(1725, 760, 1.8, false);
+            }
+        } else {
+            centrarEn(1725, 760, 1.8, false);
+        }
     });
 
     // Buscador con Enter
@@ -242,7 +291,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const texto = chip.textContent.trim();
         if (filtros[texto]) {
             chip.style.cursor = 'pointer';
-            chip.addEventListener('click', () => { mostrarInfo(filtros[texto]); navegarA(filtros[texto]); });
+            chip.addEventListener('click', () => {
+                mostrarInfo(filtros[texto]);
+                navegarA(filtros[texto]);
+            });
         }
     });
 

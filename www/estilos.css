@@ -114,7 +114,7 @@ body {
     -webkit-user-select: none;
 }
 
-/* Layer que se translada/escala — contiene imagen + hotspots */
+/* Layer que se translada/escala con el pan/zoom */
 #mapa-layer {
     position: absolute;
     top: 0; left: 0;
@@ -124,22 +124,12 @@ body {
     will-change: transform;
 }
 
-/* Imagen del mapa */
+/* SVG inline: NO intercepta eventos (el contenedor los maneja) */
 #svg-mapa {
     width: 2477px;
     height: 1595px;
     display: block;
     pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-/* Zonas clicables sobre el mapa */
-.mapa-hotspot {
-    position: absolute;
-    cursor: pointer;
-    /* Descomenta la línea de abajo para depurar posiciones: */
-    /* background: rgba(255,0,0,0.2); border: 1px solid red; */
 }
 
 
@@ -218,9 +208,7 @@ body {
     color: #444;
 }
 
-/* Hover sobre hotspots */
-.mapa-hotspot:hover {
-    background: rgba(14, 21, 59, 0.08);
-    border-radius: 8px;
-    transition: background 0.2s;
+/* Highlight animado en el SVG al seleccionar un edificio */
+.highlight-lugar {
+    animation: resplandor 1s ease-in-out 2;
 }
