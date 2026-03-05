@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mapa Uni AR</title>
+  <link rel="stylesheet" href="estilos.css">
+  
+  <script src="datos.js"></script>
+
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body>
+
+  <div class="search-container">
+    <input type="text" id="buscador" placeholder="Buscar laboratorio, edificio, servicio...">
+    <button onclick="buscarServicio()">Buscar</button>
+  </div>
+
+  <div id="vista-mapa">
+    </div>
+
+  <div id="vista-ar" style="display: none; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 50;">
+    </div>
+
+  <button class="fab-ar" onclick="activarAR()">
+    📷 Escanear Mapa
+  </button>
+
+  <div id="modal-info">
+    <div class="modal-header">
+      <h2 id="modal-titulo">Edificio</h2>
+      <button class="btn-cerrar" onclick="cerrarModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>📍 Espacios:</strong> <span id="modal-servicios"></span></p>
+      <p><strong>✉️ Contacto:</strong> <span id="modal-contacto"></span></p>
+      <p><strong>🕒 Horarios:</strong> <span id="modal-horarios"></span></p>
+    </div>
+  </div>
+
+  <script>
+    function mostrarInfo(idEdificio) {
+      // 1. Obtener datos (Asegúrense de que universidadData exista en su datos.js)
+      const datos = universidadData[idEdificio];
+      
+      if(datos) {
+        // 2. Llenar los campos
+        document.getElementById('modal-titulo').innerText = datos.nombre;
+        document.getElementById('modal-servicios').innerText = datos.servicios;
+        document.getElementById('modal-contacto').innerText = datos.contactos;
+        document.getElementById('modal-horarios').innerText = datos.horarios;
+        
+        // 3. Deslizar el modal hacia arriba
+        document.getElementById('modal-info').classList.add('activo');
+      }
+    }
+
+    function cerrarModal() {
+      // Deslizar el modal hacia abajo
+      document.getElementById('modal-info').classList.remove('activo');
+    }
+
+    function activarAR() {
+      // Ocultar mapa y buscador, mostrar cámara
+      document.getElementById('vista-mapa').style.display = 'none';
+      document.querySelector('.search-container').style.display = 'none';
+      document.getElementById('vista-ar').style.display = 'block';
+      
+      // Cambiar la función del botón flotante para que ahora sirva para "Regresar"
+      const btn = document.querySelector('.fab-ar');
+      btn.innerHTML = '⬅ Volver al Mapa';
+      btn.style.background = 'var(--azul-uni)';
+      btn.onclick = desactivarAR;
+    }
+
+    function desactivarAR() {
+      // Restaurar mapa y ocultar cámara
+      document.getElementById('vista-mapa').style.display = 'flex';
+      document.querySelector('.search-container').style.display = 'flex';
+      document.getElementById('vista-ar').style.display = 'none';
+      
+      // Restaurar el botón original
+      const btn = document.querySelector('.fab-ar');
+      btn.innerHTML = '📷 Escanear Mapa';
+      btn.style.background = 'var(--teal-uni)';
+      btn.onclick = activarAR;
+    }
+    
+    // Función vacía para el buscador (Dev 3 puede programar la lógica aquí)
+    function buscarServicio() {
+        alert("Buscando: " + document.getElementById('buscador').value);
+    }
+  </script>
+</body>
+</html>
