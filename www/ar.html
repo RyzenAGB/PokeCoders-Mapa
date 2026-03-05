@@ -12,9 +12,19 @@
     AFRAME.registerComponent('edificio-click', {
       schema: {type: 'string'},
       init: function () {
-        // Escucha el clic real dentro del entorno 3D y llama a tu función
-        this.el.addEventListener('click', () => {
-          mostrarInfo(this.data);
+        let idEdificio = this.data;
+        
+        // Escucha el toque de pantalla en celulares
+        this.el.addEventListener('touchstart', function(e) {
+          // Evita que el evento se dispare dos veces
+          e.preventDefault(); 
+          mostrarInfo(idEdificio);
+        });
+
+        // Escucha el clic normal
+        this.el.addEventListener('click', function(e) {
+          e.preventDefault();
+          mostrarInfo(idEdificio);
         });
       }
     });
@@ -49,7 +59,18 @@
     }
     .modal-close:active { transform: scale(0.9); }
     .modal-label { font-weight: bold; color: #1b365d; margin-top: 10px; }
-  </style>
+    /* FIX: Permite que los toques traspasen la capa de MindAR hacia el canvas 3D */
+    .mindar-ui-overlay {
+      pointer-events: none !important;
+    }
+    .mindar-ui-scanning {
+      pointer-events: none !important;
+    }
+    /* Asegura que el canvas de A-Frame reciba los toques */
+    .a-canvas {
+      pointer-events: auto !important;
+    }
+      </style>
 </head>
 <body>
 
