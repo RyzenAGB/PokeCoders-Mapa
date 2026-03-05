@@ -1,7 +1,6 @@
 :root {
-    --primary-blue: #002147;    /* Azul Institucional */
-    --gold: #B38E5D;            /* Dorado UniCaribe */
-    --accent-teal: #00cfca;     /* Teal del logo */
+    --primary-blue: #0e153b;    
+    --accent-teal: #10cfc9;    
     --light-gray: #f8f9fa;
     --white: #ffffff;
     --shadow: 0 8px 30px rgba(0,0,0,0.12);
@@ -14,6 +13,7 @@ body {
     height: 100vh;
     background-color: #f4f6f8;
     overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* --- HEADER --- */
@@ -30,7 +30,7 @@ body {
 
 .header-accent {
     height: 4px;
-    background: linear-gradient(to right, var(--gold), var(--accent-teal));
+    background: linear-gradient(to right, var(--primary-blue), var(--accent-teal));
     width: 100%;
 }
 
@@ -159,9 +159,24 @@ body {
     padding: 20px;
     box-sizing: border-box;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translateY(100%); /* Oculto abajo */
 }
 
-.info-panel.visible { bottom: 0; }
+.info-panel.visible {
+  transform: translateY(0); /* Sube a su posición */
+}
+
+.highlight-lugar {
+    animation: resplandor 1s ease-in-out 2;
+    filter: drop-shadow(0 0 8px var(--gold));
+}
+
+@keyframes resplandor {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; filter: brightness(1.5); }
+    100% { opacity: 1; }
+}
 
 .panel-handle {
     width: 40px;
@@ -175,4 +190,17 @@ body {
     margin: 0 0 10px 0;
     font-size: 22px;
     color: var(--primary-blue);
+}
+
+.info-item {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #444;
+}
+
+/* Mejora visual del SVG al pasar el mouse (Desktop) o tocar (Móvil) */
+#vista-mapa g:hover, #vista-mapa path:hover {
+    filter: brightness(1.1);
+    transition: filter 0.2s;
 }
