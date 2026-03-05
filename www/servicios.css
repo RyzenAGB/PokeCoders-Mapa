@@ -366,6 +366,12 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+.nav-item i {
+            display: block;
+            font-size: 20px; /* Tamaño del icono */
+            margin-bottom: 3px;
+    }
+
 .nav-item.active {
     color: var(--primary-blue);
 }
