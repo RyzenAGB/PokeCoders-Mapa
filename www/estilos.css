@@ -149,22 +149,22 @@ body {
 /* --- INFO PANEL (Estilo moderno) --- */
 .info-panel {
     position: fixed;
-    bottom: -100%;
+    bottom: 0; /* Cambia bottom de -100% a 0 */
     left: 0;
     width: 100%;
     background: var(--white);
     border-radius: 25px 25px 0 0;
     z-index: 1200;
-    transition: bottom 0.5s ease;
     padding: 20px;
     box-sizing: border-box;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    /* Esta línea es la que lo mantiene oculto abajo */
+    transform: translateY(100%); 
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transform: translateY(100%); /* Oculto abajo */
 }
 
 .info-panel.visible {
-  transform: translateY(0); /* Sube a su posición */
+    transform: translateY(0) !important; /* Sube el panel */
 }
 
 .highlight-lugar {
