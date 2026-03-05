@@ -1,64 +1,48 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const edificios = document.querySelectorAll('.edificio-interactivo');
-    const contenedorMensaje = document.getElementById('mensaje-seleccion');
-    const textoMensaje = document.getElementById('nombre-seleccionado');
-    
-    edificios.forEach(edificio => {
-        edificio.addEventListener('click', function(e) {
-            e.preventDefault();
+const datosEdificios = {
+    "Edificio_C": {
+        titulo: "Edificio C - Aulas",
+        desc: "Principal bloque de salones de clases y cubículos de profesores.",
+        color: "#C88D4A"
+    },
+    "Edificio_B": {
+        titulo: "Edificio B - Laboratorios",
+        desc: "Aquí se encuentran los laboratorios de ingeniería y ciencias básicas.",
+        color: "#40832F"
+    },
+    "Biblioteca": {
+        titulo: "Biblioteca Central",
+        desc: "Área de estudio silencioso, préstamos de libros y centro de cómputo.",
+        color: "#A02E60"
+    },
+    "Edificio_E": {
+        titulo: "Edificio E - Rectoría",
+        desc: "Oficinas administrativas, servicios escolares y tesorería.",
+        color: "#914AC8"
+    }
+    // Agrega aquí todos los IDs que tienes en tu SVG
+};
 
-            // 1. Efecto visual de selección en el mapa
-            edificios.forEach(b => b.classList.remove('seleccionado'));
+document.addEventListener('DOMContentLoaded', () => {
+    // Buscamos todos los elementos dentro del grupo "Mapa_Uni_Vec" que tengan un ID
+    const elementosMapa = document.querySelectorAll('#Mapa_Uni_Vec [id]');
+
+    elementosMapa.forEach(el => {
+        // Agregamos la clase para que el cursor cambie y tenga efectos
+        el.classList.add('edificio-interactivo');
+
+        el.addEventListener('click', function() {
+            const idClick = this.id;
+            mostrarInfo(idClick);
+            
+            // Efecto visual de selección
+            elementosMapa.forEach(path => path.classList.remove('seleccionado'));
             this.classList.add('seleccionado');
             
-            // 2. Vibración suave
-            if (window.navigator.vibrate) {
-                window.navigator.vibrate(50);
-            }
-
-            // 3. ✨ ACTUALIZAR EL MENSAJE FLOTANTE ✨
-            const id = this.id;
-            const datos = universidadData[id]; // Buscamos la info del edificio tocado
-            
-            if (datos) {
-                // Si existe en datos.js, mostramos su nombre
-                textoMensaje.innerText = datos.nombre;
-                contenedorMensaje.classList.remove('mensaje-oculto'); // Lo hacemos visible
-                
-                // (Opcional) Ocultar el mensaje después de 3 segundos
-                // setTimeout(() => { contenedorMensaje.classList.add('mensaje-oculto'); }, 3000);
-            } else {
-                // Si no hay datos (por si el Dev 2 agregó un edificio nuevo y Apoyo no lo ha llenado)
-                textoMensaje.innerText = id.replace('_', ' '); // Ej: "Edificio_C" -> "Edificio C"
-                contenedorMensaje.classList.remove('mensaje-oculto');
-            }
-
-            // 4. Llamar al Modal
-            mostrarInfo(id);
+            if (window.navigator.vibrate) window.navigator.vibrate(40);
         });
     });
 });
 
-// --- FUNCIONES DEL MODAL ---
-function mostrarInfo(idEdificio) {
-    // Extrae la información de datos.js basado en el ID tocado
-    const datos = universidadData[idEdificio]; 
-    
-    if(datos) {
-        document.getElementById('modal-titulo').innerText = datos.nombre;
-        document.getElementById('modal-servicios').innerText = datos.servicios;
-        document.getElementById('modal-contacto').innerText = datos.contactos;
-        document.getElementById('modal-horarios').innerText = datos.horarios;
-        
-        document.getElementById('modal-info').classList.add('activo'); // Sube el modal
-    } else {
-        console.warn("Faltan datos en datos.js para el ID: " + idEdificio);
-    }
-}
-
-function cerrarModal() {
-    document.getElementById('modal-info').classList.remove('activo'); // Baja el modal
-}
 
 // --- FUNCIONES DE REALIDAD AUMENTADA ---
 function activarAR() {
@@ -87,4 +71,29 @@ function desactivarAR() {
 function buscarServicio() {
     const busqueda = document.getElementById('buscador').value.toLowerCase();
     alert("Buscando: " + busqueda);
+}
+
+function mostrarInfo(id) {
+    const panel = document.getElementById('info-panel');
+    const titulo = document.getElementById('info-titulo');
+    const desc = document.getElementById('info-descripcion');
+    
+    const info = datosEdificios[id];
+
+    if (info) {
+        titulo.innerText = info.titulo;
+        desc.innerText = info.desc;
+        titulo.style.color = info.color;
+        panel.classList.add('visible');
+    } else {
+        // Si el ID no está en nuestro diccionario, mostramos algo genérico
+        titulo.innerText = "Lugar: " + id.replace('_', ' ');
+        desc.innerText = "Información detallada próximamente.";
+        panel.classList.add('visible');
+    }
+}
+
+function cerrarPanel() {
+    document.getElementById('info-panel').classList.remove('visible');
+    document.querySelectorAll('.edificio-interactivo').forEach(el => el.classList.remove('seleccionado'));
 }
