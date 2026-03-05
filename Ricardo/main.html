@@ -7,10 +7,14 @@
     <title>Mapa Móvil</title>
 </head>
 <body>
-    <script src="script.js"></script>
-    <div id="mensaje">ola homelo chino</div>
+    <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar laboratorio, edificio, servicio...">
+        <button onclick="buscarServicio()">Buscar</button>
+    </div>
 
-    <svg viewBox="0 0 1150 890" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <div id="vista-mapa">
+        <div id="mensaje">Inicio</div>
+        <svg viewBox="0 0 1150 890" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="Grupo1" clip-path="url(#clip0_8_23)">
             <path id="Edificio_C" d="M697 562.5L675 617.5L599.5 578L500.5 523L401 461L333 413L366.5 366L474 437.5L604.5 513L697 562.5Z" fill="#C88D4A" stroke="#C88D4A" stroke-width="2"/>
             <path id="Edificio_E" d="M306 324L271 371L218 331.5L131 259L53 187L-26.5 108.5L17 67.5L99 148.5L208.5 245L306 324Z" fill="#914AC8" stroke="#914AC8" stroke-width="2"/>
@@ -28,5 +32,26 @@
             </clipPath>
         </defs>
     </svg>
+    </div>
+
+  <div id="vista-ar" style="display: none; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 50;">
+    </div>
+
+  <button class="fab-ar" onclick="activarAR()">
+    📷 Escanear Mapa
+  </button>
+
+  <div id="modal-info">
+    <div class="modal-header">
+      <h2 id="modal-titulo">Edificio</h2>
+      <button class="btn-cerrar" onclick="cerrarModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>📍 Espacios:</strong> <span id="modal-servicios"></span></p>
+      <p><strong>✉️ Contacto:</strong> <span id="modal-contacto"></span></p>
+      <p><strong>🕒 Horarios:</strong> <span id="modal-horarios"></span></p>
+    </div>
+  </div>
+    <script src="main.js"></script>
 </body>
 </html>
