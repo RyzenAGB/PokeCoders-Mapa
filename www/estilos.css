@@ -103,27 +103,43 @@ body {
 
 #vista-mapa {
     width: 100%;      
-    height: 100%;     /* Se expande hasta llenar el map-container */
+    height: 100%;
     background: white;
     border-radius: 24px; 
     box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
+    position: relative;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-#vista-mapa svg {
-    width: 90%;           /* El mapa respira dentro de su contenedor */
-    height: 90%;
-    object-fit: contain;  /* Mantiene la proporción sin deformarse */
-    display: block;
+/* Layer que se translada/escala — contiene imagen + hotspots */
+#mapa-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 2477px;
+    height: 1595px;
+    transform-origin: 0 0;
+    will-change: transform;
 }
 
+/* Imagen del mapa */
 #svg-mapa {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 2477px;
+    height: 1595px;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Zonas clicables sobre el mapa */
+.mapa-hotspot {
+    position: absolute;
+    cursor: pointer;
+    /* Descomenta la línea de abajo para depurar posiciones: */
+    /* background: rgba(255,0,0,0.2); border: 1px solid red; */
 }
 
 
@@ -202,8 +218,9 @@ body {
     color: #444;
 }
 
-/* Mejora visual del SVG al pasar el mouse (Desktop) o tocar (Móvil) */
-#vista-mapa g:hover, #vista-mapa path:hover {
-    filter: brightness(1.1);
-    transition: filter 0.2s;
+/* Hover sobre hotspots */
+.mapa-hotspot:hover {
+    background: rgba(14, 21, 59, 0.08);
+    border-radius: 8px;
+    transition: background 0.2s;
 }
