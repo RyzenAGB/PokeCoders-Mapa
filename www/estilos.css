@@ -1,7 +1,7 @@
 /* --- VARIABLES DE MARCA UNICARIBE --- */
 :root {
-  --azul-uni: #1b365d;   /* Azul oscuro institucional */
-  --teal-uni: #009eb3;   /* Verde cerceta brillante */
+  --azul-uni: #0e153b;
+  --teal-uni: #00cfca;
   --gris-fondo: #f4f6f8;
   --texto-oscuro: #333333;
 }
@@ -14,7 +14,7 @@ body, html {
 /* --- 1. BARRA DE BÚSQUEDA FLOTANTE --- */
 .search-container {
   position: fixed; top: 20px; left: 5%; width: 90%; z-index: 1000;
-  display: flex; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  display: flex; 
   border-radius: 30px; background: white; overflow: hidden;
 }
 
@@ -30,23 +30,35 @@ body, html {
 
 .search-container button:active { background: var(--teal-uni); }
 
-/* --- 2. CONTENEDOR DEL MAPA --- */
+/* --- 2. CONTENEDOR DEL MAPA Y SVG --- */
 #vista-mapa {
-  width: 100vw; height: 100vh; overflow: auto; 
-  /* Si el mapa es SVG, permite hacer scroll con el dedo */
-  display: flex; justify-content: center; align-items: center;
+  width: 90vw;
+  height: 65vh;
+  overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+}
+
+#vista-mapa svg {
+  width: 100%;
+  height: 100%;
+  min-width: 800px; /* Obliga a que se pueda hacer scroll si la pantalla es muy chica */
 }
 
 .edificio-interactivo { cursor: pointer; transition: all 0.2s ease-in-out; }
-.edificio-interactivo:active { opacity: 0.6; transform: scale(0.98); }
+.edificio-interactivo:active { transform: scale(0.98); }
+.edificio-interactivo.seleccionado { opacity: 0.6; stroke: var(--texto-oscuro); stroke-width: 4px; }
 
 /* --- 3. BOTTOM SHEET (MODAL DESLIZANTE) --- */
 #modal-info {
   position: fixed; bottom: -100%; left: 0; width: 100%;
   background: white; border-top-left-radius: 25px; border-top-right-radius: 25px;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 2000;
-  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
-  padding-bottom: 30px; /* Espacio para el notch del celular */
+  z-index: 2000;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding-bottom: 30px;
 }
 
 #modal-info.activo { bottom: 0; }
@@ -69,7 +81,35 @@ body, html {
   position: fixed; bottom: 30px; right: 20px; z-index: 1500;
   background: var(--teal-uni); color: white; border: none;
   border-radius: 50px; padding: 15px 25px; font-size: 16px; font-weight: bold;
-  box-shadow: 0 4px 15px rgba(0, 158, 179, 0.4); cursor: pointer;
+  cursor: pointer;
   display: flex; align-items: center; gap: 8px;
 }
 .fab-ar:active { transform: scale(0.95); }
+
+/* --- 1.5 MENSAJE DE SELECCIÓN FLOTANTE --- */
+#mensaje-seleccion {
+  position: fixed;
+  top: 85px; /* Lo ubica justo debajo de la barra de búsqueda */
+  left: 50%;
+  transform: translateX(-50%); /* Lo centra perfectamente */
+  background-color: var(--azul-uni);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 900;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+}
+
+#mensaje-seleccion.mensaje-oculto {
+  opacity: 0;
+  pointer-events: none; /* Para que no estorbe si está invisible */
+  transform: translate(-50%, -10px); /* Efecto sutil de que cae al aparecer */
+}
+
+#nombre-seleccionado {
+  font-weight: bold;
+  color: var(--teal-uni); /* Resalta el nombre en el color secundario */
+}

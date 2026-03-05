@@ -11,14 +11,17 @@
         <input type="text" id="buscador" placeholder="Buscar laboratorio, edificio, servicio...">
         <button onclick="buscarServicio()">Buscar</button>
     </div>
+    
+    <div id="mensaje-seleccion" class="mensaje-oculto">
+        Has seleccionado: <span id="nombre-seleccionado">Ninguno</span>
+    </div>
 
   <div id="vista-mapa">
-        <div id="mensaje">Inicio</div>
-        <svg viewBox="0 0 1150 890" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 1150 890" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="Grupo1" clip-path="url(#clip0_8_23)">
-            <path id="Edificio_C" d="M697 562.5L675 617.5L599.5 578L500.5 523L401 461L333 413L366.5 366L474 437.5L604.5 513L697 562.5Z" fill="#C88D4A" stroke="#C88D4A" stroke-width="2"/>
-            <path id="Edificio_E" d="M306 324L271 371L218 331.5L131 259L53 187L-26.5 108.5L17 67.5L99 148.5L208.5 245L306 324Z" fill="#914AC8" stroke="#914AC8" stroke-width="2"/>
-            <g id="Areas_Verdes">
+            <path id="Edificio_C" class="edificio-interactivo" d="M697 562.5L675 617.5L599.5 578L500.5 523L401 461L333 413L366.5 366L474 437.5L604.5 513L697 562.5Z" fill="#C88D4A" stroke="#C88D4A" stroke-width="2"/>
+            <path id="Edificio_E" class="edificio-interactivo" d="M306 324L271 371L218 331.5L131 259L53 187L-26.5 108.5L17 67.5L99 148.5L208.5 245L306 324Z" fill="#914AC8" stroke="#914AC8" stroke-width="2"/>
+            <g id="Areas_Verdes" class="edificio-interactivo">
                 <path id="Vector" d="M383.912 296.379L343.912 350.379L378.912 376.379L484.412 444.379L602.912 512.379L722.912 574.879L747.912 515.379L689.412 484.379L600.412 433.879L493.412 367.379L383.912 296.379Z" fill="#599275"/>
                 <path id="Vector_2" d="M51.412 1.37946L1.41199 46.8795L50.912 101.379L111.912 159.879L184.412 222.879L265.412 289.879L332.912 341.379L371.412 282.379L298.912 226.379L210.912 152.379L123.412 72.8795L51.412 1.37946Z" fill="#599275"/>
                 <path id="Vector_3" d="M763.912 520.879L737.412 579.379L807.412 613.379L888.912 648.879L980.912 683.379L1055.91 707.879L1130.41 728.879L1147.91 663.379L1105.91 652.379L998.412 618.379L884.912 575.379L825.412 550.379L763.912 520.879Z" fill="#599275"/>
@@ -32,7 +35,7 @@
             </clipPath>
         </defs>
     </svg>
-    </div>
+  </div>
 
   <div id="vista-ar" style="display: none; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 50;">
     </div>
@@ -52,6 +55,8 @@
       <p><strong>🕒 Horarios:</strong> <span id="modal-horarios"></span></p>
     </div>
   </div>
-    <script src="main.js"></script>
+  
+  <script src="datos.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
