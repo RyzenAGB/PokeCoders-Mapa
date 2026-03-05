@@ -50,11 +50,88 @@
       transform: translateX(-50%) scale(0.95);
       background-color: #009eb3;
     }
+
+    /* Estilos para el Modal de Información */
+    #modal-info {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+      z-index: 9998;
+      transition: bottom 0.4s ease-out;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    #modal-info.activo {
+      bottom: 0;
+    }
+
+    #modal-info h2 {
+      margin: 0 0 15px 0;
+      color: #1b365d;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #modal-info p {
+      margin: 10px 0;
+      color: #333;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #009eb3;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal-close:active {
+      transform: scale(0.9);
+    }
+
+    .modal-label {
+      font-weight: bold;
+      color: #1b365d;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
   <button id="btn-cerrar-ar" onclick="cerrarAR()">⬅ Volver al Mapa 2D</button>
+
+  <!-- Modal de Información -->
+  <div id="modal-info">
+    <button class="modal-close" onclick="cerrarModal()">✕</button>
+    <h2 id="modal-titulo">Información del Edificio</h2>
+    <p>
+      <span class="modal-label">Servicios:</span><br>
+      <span id="modal-servicios"></span>
+    </p>
+    <p>
+      <span class="modal-label">Contactos:</span><br>
+      <span id="modal-contacto"></span>
+    </p>
+    <p>
+      <span class="modal-label">Horarios:</span><br>
+      <span id="modal-horarios"></span>
+    </p>
+  </div>
 
   <div id="vista-ar">
     <a-scene 
@@ -70,62 +147,51 @@
       <a-entity mindar-image-target="targetIndex: 0">
         
 <a-plane class="clickable" position="-0.28 0.18 0.01" width="0.15" height="0.05" color="#914AC8" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-e')">
+               onclick="mostrarInfo('edificio-e')">
         <a-text value="INFO EDIF. E" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="-0.15 0.08 0.01" width="0.15" height="0.05" color="#C88D4A" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-c')">
+               onclick="mostrarInfo('edificio-c')">
         <a-text value="INFO EDIF. C" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="-0.02 -0.02 0.01" width="0.15" height="0.05" color="#40832F" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-b')">
+               onclick="mostrarInfo('edificio-b')">
         <a-text value="INFO EDIF. B" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="0.15 -0.08 0.01" width="0.15" height="0.05" color="#EDC045" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-a')">
+               onclick="mostrarInfo('edificio-a')">
         <a-text value="INFO EDIF. A" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="0.32 -0.05 0.01" width="0.15" height="0.05" color="#A12E60" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-d')">
+               onclick="mostrarInfo('edificio-d')">
         <a-text value="INFO EDIF. D" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="-0.22 -0.15 0.01" width="0.15" height="0.05" color="#385B89" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-g')">
+               onclick="mostrarInfo('edificio-g')">
         <a-text value="INFO EDIF. G" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="-0.08 -0.18 0.01" width="0.15" height="0.05" color="#54A6A9" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('edificio-f')">
+               onclick="mostrarInfo('edificio-f')">
         <a-text value="INFO EDIF. F" align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
       </a-plane>
 
       <a-plane class="clickable" position="0.22 -0.22 0.01" width="0.15" height="0.05" color="#ADADAD" opacity="0.9" 
-               onclick="window.parent.mostrarInfo('estacionamientos')">
-        <a-text value="INFO ESTAC." align="center" position="0 0 0.02" scale="0.1 0.1 0.1"></a-text>
+               onclick="mostrarInfo('estacionamientos')">
       </a-plane>
 
       </a-entity>
     </a-scene>
   </div>
 
+  <script src="datos.js"></script>
   <script>
-    // Esta función puente se asegura de que la AR no se rompa si la pruebas sola.
-    // Si la app está embebida en el index.html principal, llamará a la función del Dev 3.
-    function comunicarInfo(idEdificio) {
-      if (window.parent && typeof window.parent.mostrarInfo === 'function') {
-        // Llama a la función del index.html para abrir la tarjeta de información
-        window.parent.mostrarInfo(idEdificio);
-      } else {
-        // Si estás probando la AR sola en tu celular, te avisa que el clic funciona perfecto
-        alert("Clic detectado en: " + idEdificio + "\n(Para ver los datos reales, abre la app desde el index.html)");
-      }
-    }
-
+    // Función para cerrar la vista AR
     function cerrarAR() {
       if (window.parent && typeof window.parent.desactivarAR === 'function') {
         window.parent.desactivarAR();
@@ -133,23 +199,29 @@
         alert("Simulando volver al Mapa 2D");
       }
     }
-        // Esta función debe estar en tu script principal
+
+    // Función para mostrar información en el modal
     function mostrarInfo(idEdificio) {
-        // 1. Buscar el edificio en la base de datos del archivo datos.js
-        const edificio = universidadData[idEdificio];
+      // Buscar el edificio en la base de datos de datos.js
+      const edificio = universidadData[idEdificio];
 
-        if (edificio) {
-            // 2. Insertar los datos en el Modal
-            document.getElementById('modal-titulo').innerText = edificio.nombre; //
-            document.getElementById('modal-servicios').innerText = edificio.servicios; //
-            document.getElementById('modal-contacto').innerText = edificio.contactos; //
-            document.getElementById('modal-horarios').innerText = edificio.horarios; //
+      if (edificio) {
+        // Insertar los datos en el modal
+        document.getElementById('modal-titulo').innerText = edificio.nombre;
+        document.getElementById('modal-servicios').innerText = edificio.servicios;
+        document.getElementById('modal-contacto').innerText = edificio.contactos;
+        document.getElementById('modal-horarios').innerText = edificio.horarios;
 
-            // 3. Mostrar el modal (animación de subida)
-            document.getElementById('modal-info').classList.add('activo');
-        } else {
-            console.error("No se encontraron datos para el ID: " + idEdificio);
-        }
+        // Mostrar el modal (animación de subida)
+        document.getElementById('modal-info').classList.add('activo');
+      } else {
+        console.error("No se encontraron datos para el ID: " + idEdificio);
+      }
+    }
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+      document.getElementById('modal-info').classList.remove('activo');
     }
   </script>
 </body>
