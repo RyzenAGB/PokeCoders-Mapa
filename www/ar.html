@@ -12,17 +12,17 @@
     AFRAME.registerComponent('edificio-click', {
       schema: {type: 'string'},
       init: function () {
-        let idEdificio = this.data;
-        
-        // Escucha el toque de pantalla en celulares
-        this.el.addEventListener('touchstart', function(e) {
-          // Evita que el evento se dispare dos veces
+        const idEdificio = this.data;
+        const el = this.el;
+
+        // Escucha el toque de pantalla en celulares (Touch)
+        el.addEventListener('touchstart', function(e) {
           e.preventDefault(); 
           mostrarInfo(idEdificio);
         });
 
-        // Escucha el clic normal
-        this.el.addEventListener('click', function(e) {
+        // Escucha el clic con el mouse (PC)
+        el.addEventListener('click', function(e) {
           e.preventDefault();
           mostrarInfo(idEdificio);
         });
@@ -37,18 +37,29 @@
     #vista-ar {
       width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 10;
     }
+    
+    /* 🚨 ESTO ES LO QUE ARREGLA EL BUG: Deja pasar el dedo hacia el 3D 🚨 */
+    .mindar-ui-overlay, .mindar-ui-scanning {
+      pointer-events: none !important;
+    }
+    .a-canvas {
+      pointer-events: auto !important;
+    }
+
+    /* BOTÓN VOLVER */
     #btn-cerrar-ar {
       position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9999;
       padding: 15px 30px; background-color: #1b365d; color: white; border-radius: 30px;
       border: 2px solid #009eb3; font-size: 16px; font-weight: bold; box-shadow: 0 6px 15px rgba(0,0,0,0.4); cursor: pointer;
+      pointer-events: auto;
     }
     #btn-cerrar-ar:active { transform: translateX(-50%) scale(0.95); background-color: #009eb3; }
 
-    /* Modal */
+    /* MODAL DE INFORMACIÓN */
     #modal-info {
       position: fixed; bottom: -100%; left: 0; right: 0; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-      border-radius: 20px 20px 0 0; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
-      z-index: 9998; transition: bottom 0.4s ease-out; max-height: 60vh; overflow-y: auto;
+      border-radius: 20px 20px 0 0; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+      z-index: 99999; transition: bottom 0.3s ease-out; max-height: 60vh; overflow-y: auto; pointer-events: auto;
     }
     #modal-info.activo { bottom: 0; }
     #modal-info h2 { margin: 0 0 15px 0; color: #1b365d; font-size: 20px; font-weight: bold; }
@@ -59,18 +70,7 @@
     }
     .modal-close:active { transform: scale(0.9); }
     .modal-label { font-weight: bold; color: #1b365d; margin-top: 10px; }
-    /* FIX: Permite que los toques traspasen la capa de MindAR hacia el canvas 3D */
-    .mindar-ui-overlay {
-      pointer-events: none !important;
-    }
-    .mindar-ui-scanning {
-      pointer-events: none !important;
-    }
-    /* Asegura que el canvas de A-Frame reciba los toques */
-    .a-canvas {
-      pointer-events: auto !important;
-    }
-      </style>
+  </style>
 </head>
 <body>
 
@@ -86,7 +86,7 @@
 
   <div id="vista-ar">
     <a-scene 
-      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: yes;" 
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: no;" 
       embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
@@ -133,16 +133,18 @@
   <script src="datos.js"></script>
   <script>
     function cerrarAR() {
+      // Si la app principal maneja esto:
       if (window.parent && typeof window.parent.desactivarAR === 'function') {
         window.parent.desactivarAR();
       } else {
-        alert("Simulando volver al Mapa 2D (Conecta esto con tu index.html)");
+        // Redirección segura si se abre el ar.html suelto
+        window.location.href = 'index.html'; 
       }
     }
 
-    // Función principal para mostrar info
+    // Esta función recibe el ID desde el evento de toque
     function mostrarInfo(idEdificio) {
-      console.log("AR detectó un clic en:", idEdificio); // Debug en consola para asegurar que dispara
+      console.log("¡Toque detectado en!", idEdificio);
       
       const edificio = universidadData[idEdificio];
 
@@ -152,9 +154,10 @@
         document.getElementById('modal-contacto').innerText = edificio.contactos;
         document.getElementById('modal-horarios').innerText = edificio.horarios;
 
+        // Anima el modal hacia arriba
         document.getElementById('modal-info').classList.add('activo');
       } else {
-        console.error("¡Error! No se encontraron datos en datos.js para el ID: " + idEdificio);
+        console.error("No se encontraron datos en datos.js para: " + idEdificio);
       }
     }
 
