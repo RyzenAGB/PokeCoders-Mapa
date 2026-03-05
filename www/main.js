@@ -7,13 +7,39 @@
 const ZOOM_MIN = 0.2;
 const ZOOM_MAX = 5;
 
+const LIMITS = {
+    minX: -200,  // Límite izquierdo
+    maxX: 2700,  // Límite derecho
+    minY: -500,  // Límite superior
+    maxY: 2200   // Límite inferior
+};
+
 let camX = 0, camY = 0, camScale = 1;
 let wasDrag = false;
 
 // ── Aplica la transformación al layer ──
 function applyTransform(animated) {
     const layer = document.getElementById('mapa-layer');
-    if (!layer) return;
+    const container = document.getElementById('vista-mapa');
+    if (!layer || !container) return;
+
+    // --- LÓGICA DE MAX BOUNDS ---
+    // Calculamos el ancho y alto visible del contenedor
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+
+    // Restringimos camX: No permitir que el borde derecho del mapa entre más allá del borde derecho del visor
+    // y lo mismo para el izquierdo.
+    const minX = w - (LIMITS.maxX * camScale);
+    const maxX = - (LIMITS.minX * camScale);
+    const minY = h - (LIMITS.maxY * camScale);
+    const maxY = - (LIMITS.minY * camScale);
+
+    // Aplicamos la restricción (clamping)
+    camX = Math.min(maxX, Math.max(minX, camX));
+    camY = Math.min(maxY, Math.max(minY, camY));
+    // ----------------------------
+
     layer.style.transition = animated
         ? 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
         : 'none';
@@ -218,6 +244,49 @@ function mostrarInfo(id) {
     }
 }
 
+function initPanelSwipeClose() {
+    const panel = document.getElementById('info-panel');
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+
+    panel.addEventListener('touchstart', e => {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+        panel.classList.add('dragging');
+    }, { passive: true });
+
+    panel.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+
+        // Solo permitimos arrastrar hacia abajo (diff > 0)
+        if (diff > 0) {
+            panel.style.transform = `translateY(${diff}px)`;
+        }
+    }, { passive: true });
+
+    panel.addEventListener('touchend', e => {
+        isDragging = false;
+        panel.classList.remove('dragging');
+        
+        const diff = currentY - startY;
+        const threshold = 100; // Píxeles necesarios para considerar que se quiere cerrar
+
+        if (diff > threshold) {
+            // Cerrar el panel
+            panel.classList.remove('visible');
+        } 
+        
+        // Limpiar el estilo inline para que el CSS tome el control de nuevo
+        panel.style.transform = '';
+        startY = 0;
+        currentY = 0;
+    });
+}
+
 // ============================================================
 //  BUSCADOR
 // ============================================================
@@ -286,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Filtros rápidos
-    const filtros = { "Aulas": "Edificio_B", "Baños": "Baños_Vec", "Cafetería": "Cafetería", "Caja": "Edificio_A" };
+    const filtros = { "Edificio A": "Edificio_A", "Edificio B": "Edificio_B", "Edificio C": "Edificio_C", "Biblioteca": "Biblioteca", "Edificio F": "Edificio_F", "Edificio G": "Edificio G", "SAC": "Edificio_C"};
     document.querySelectorAll('.filter-chip').forEach(chip => {
         const texto = chip.textContent.trim();
         if (filtros[texto]) {
@@ -297,10 +366,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+    
+    initPanelSwipeClose(); // <--- Nueva función
 
-    // Cerrar panel con handle
+    // Modifica ligeramente tu lógica de cerrar con el handle para que sea consistente
     document.querySelector('.panel-handle')?.addEventListener('click', () => {
-        document.getElementById('info-panel').classList.remove('visible');
+        const panel = document.getElementById('info-panel');
+        panel.style.transform = ''; // Limpia posibles residuos del drag
+        panel.classList.remove('visible');
     });
 
     // Cerrar panel al tocar fuera
