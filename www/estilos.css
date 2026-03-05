@@ -1,128 +1,177 @@
-/* --- VARIABLES DE MARCA UNICARIBE --- */
 :root {
-  --azul-uni: #0e153b;
-  --teal-uni: #00cfca;
-  --gris-fondo: #f4f6f8;
-  --texto-oscuro: #333333;
+    --primary-blue: #002147;    /* Azul Institucional */
+    --gold: #B38E5D;            /* Dorado UniCaribe */
+    --accent-teal: #00cfca;     /* Teal del logo */
+    --light-gray: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 8px 30px rgba(0,0,0,0.12);
 }
 
-body, html {
-  margin: 0; 
-  padding: 0;
-  font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-  background-color: var(--gris-fondo);
-  overflow: hidden;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* Alinea elementos uno abajo de otro */
+    height: 100vh;
+    background-color: #f4f6f8;
+    overflow: hidden;
 }
 
-/* --- 1. BARRA DE BÚSQUEDA FLOTANTE --- */
+/* --- HEADER --- */
+.main-header {
+    background: var(--primary-blue);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1001;
+}
+
+.header-accent {
+    height: 4px;
+    background: linear-gradient(to right, var(--gold), var(--accent-teal));
+    width: 100%;
+}
+
+/* --- BUSCADOR Y FILTROS --- */
+.search-wrapper {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
 .search-container {
-  position: fixed; top: 20px; left: 5%; width: 90%; z-index: 1000;
-  display: flex; 
-  border-radius: 30px; background: white; overflow: hidden;
+    background: var(--white);
+    border-radius: 12px;
+    display: flex;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .search-container input {
-  flex: 1; border: none; padding: 15px 20px; font-size: 16px; outline: none;
+    flex: 1;
+    padding: 15px;
+    border: none;
+    outline: none;
+    font-size: 16px;
 }
 
 .search-container button {
-  background: var(--azul-uni); color: white; border: none;
-  padding: 0 25px; font-weight: bold; cursor: pointer;
-  transition: background 0.3s;
+    background: white;
+    border: none;
+    padding: 0 15px;
+    color: var(--primary-blue);
 }
 
-.search-container button:active { background: var(--teal-uni); }
+.quick-filters {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
 
-/* --- 2. CONTENEDOR DEL MAPA Y SVG --- */
+.filter-chip {
+    background: var(--white);
+    border: 1px solid #ddd;
+    padding: 6px 15px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- MAPA --- */
+/* Contenedor principal para centrar todo */
+.map-container {
+    flex-grow: 1; /* Ocupa todo el espacio sobrante entre arriba y abajo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px; /* Más espacio a los lados para que no toque los bordes del cel */
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* La "tarjeta" del mapa */
 #vista-mapa {
-  width: 90%; 
-  height: 40vh;
-  margin: 10px 10px 20px 20px; 
-  background-color: rgba(255, 255, 255, 0); 
-  border-radius: 20px; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
-  overflow: hidden;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  position: relative;
-  z-index: 10;
+width: 100%;      
+    height: 100%;     /* Se expande hasta llenar el map-container */
+    max-height: 500px; /* Evita que se estire demasiado en pantallas muy largas */
+    background: white;
+    border-radius: 24px; 
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-#vista-mapa sgv {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  touch-action: none;
-  user-select: none;
-  transition: transform 0.1s ease-out;
-  transform-origin: center;
+/* Ajuste del SVG interno */
+#vista-mapa svg {
+    width: 95%; 
+    height: 95%;
+    object-fit: contain; /* Clave: mantiene la forma del mapa sin importar el tamaño */
+    display: block;
 }
-.edificio-interactivo { cursor: pointer; transition: all 0.2s ease-in-out; }
-.edificio-interactivo:active { transform: scale(0.98); }
-.edificio-interactivo.seleccionado { opacity: 0.6; stroke: var(--texto-oscuro); stroke-width: 4px; }
 
-/* --- 4. BOTÓN FLOTANTE PARA AR (FAB) --- */
-.fab-ar {
-  position: fixed; bottom: 30px; right: 20px; z-index: 1500;
-  background: var(--teal-uni); color: white; border: none;
-  border-radius: 50px; padding: 15px 25px; font-size: 16px; font-weight: bold;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 8px;
+#svg-mapa {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.fab-ar:active { transform: scale(0.95); }
 
-/* --- 5. PANEL DE INFORMACIÓN (BOTTOM SHEET) --- */
+/* --- BOTONES DE ACCIÓN --- */
+.action-buttons {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-ar {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 18px;
+    border-radius: 15px;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(0,33,71,0.3);
+    border-bottom: 4px solid var(--gold);
+}
+
+/* --- INFO PANEL (Estilo moderno) --- */
 .info-panel {
-  position: fixed;
-  bottom: -100%; /* Escondido por defecto */
-  left: 0;
-  width: 100%;
-  background: white;
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
-  z-index: 2000;
-  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-  padding: 20px;
-  box-sizing: border-box;
-  max-height: 50vh;
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background: var(--white);
+    border-radius: 25px 25px 0 0;
+    z-index: 1200;
+    transition: bottom 0.5s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
 }
 
-.info-panel.visible {
-  bottom: 0;
+.info-panel.visible { bottom: 0; }
+
+.panel-handle {
+    width: 40px;
+    height: 5px;
+    background: #dee2e6;
+    border-radius: 5px;
+    margin: 0 auto 15px;
 }
 
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-.handle {
-  width: 40px;
-  height: 5px;
-  background: #ccc;
-  border-radius: 10px;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.btn-cerrar {
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  cursor: pointer;
+#info-titulo {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+    color: var(--primary-blue);
 }
