@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Servicios | UniCaribe</title>
+    <link rel="stylesheet" href="servicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="logo-placeholder">UNICARIBE</div>
+    </header>
+    <div class="header-accent"></div>
+
+    <!-- HERO -->
+    <div class="page-hero">
+        <span class="hero-icon">🎓</span>
+        <h1>Servicios Universitarios</h1>
+        <p>Todo lo que necesitas en un solo lugar</p>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+
+        <!-- LICENCIATURAS -->
+        <div class="service-card" id="card-lic">
+            <div class="card-header" onclick="toggle('card-lic')">
+                <div class="card-icon" style="background:#e8f4ff;">📚</div>
+                <div class="card-title-group">
+                    <div class="card-title">Licenciaturas</div>
+                    <div class="card-subtitle">Oferta educativa de pregrado</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+                <div class="licenciaturas-grid">
+                    <div class="lic-card">
+                        <span class="lic-icon">💼</span>
+                        <div class="lic-name">Administración de Empresas</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">📊</span>
+                        <div class="lic-name">Contaduría Pública</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">⚖️</span>
+                        <div class="lic-name">Derecho</div>
+                        <div class="lic-duration">4.5 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">🖥️</span>
+                        <div class="lic-name">Sistemas Computacionales</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">🏨</span>
+                        <div class="lic-name">Turismo y Hotelería</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">🧠</span>
+                        <div class="lic-name">Psicología</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">📣</span>
+                        <div class="lic-name">Comunicación y Medios</div>
+                        <div class="lic-duration">4 años</div>
+                    </div>
+                    <div class="lic-card">
+                        <span class="lic-icon">🌿</span>
+                        <div class="lic-name">Gastronomía</div>
+                        <div class="lic-duration">3.5 años</div>
+                    </div>
+                </div>
+                <div class="info-row" style="margin-top:14px;">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Información y admisiones</div>
+                        <div class="info-row-text">Edificio A, planta baja · Control Escolar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BIBLIOTECA -->
+        <div class="service-card" id="card-bib">
+            <div class="card-header" onclick="toggle('card-bib')">
+                <div class="card-icon" style="background:#fff3e0;">📖</div>
+                <div class="card-title-group">
+                    <div class="card-title">Biblioteca</div>
+                    <div class="card-subtitle">Acervo físico y digital</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+                <p class="desc-text">Espacio de consulta y estudio con acervo físico, acceso a bases de datos digitales, préstamo de libros y salas de estudio grupal e individual.</p>
+
+                <div class="info-row">
+                    <div class="info-row-icon">🕐</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Horario de atención</div>
+                        <table class="horario-table">
+                            <tr><td>Lunes – Viernes</td><td>7:00 am – 9:00 pm</td></tr>
+                            <tr><td>Sábado</td><td>8:00 am – 2:00 pm</td></tr>
+                            <tr><td>Domingo</td><td>Cerrado</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">📋</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Requisitos de préstamo</div>
+                        <div class="info-row-text">Credencial vigente de estudiante · Máximo 3 libros · Plazo: 7 días naturales</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">💻</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Servicios digitales</div>
+                        <div class="info-row-text">Acceso a bases de datos académicas, repositorio institucional y Wi-Fi de alta velocidad.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Ubicación</div>
+                        <div class="info-row-text">Edificio B, planta alta</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LUDOTECA -->
+        <div class="service-card" id="card-ludo">
+            <div class="card-header" onclick="toggle('card-ludo')">
+                <div class="card-icon" style="background:#fce4ec;">🎲</div>
+                <div class="card-title-group">
+                    <div class="card-title">Ludoteca</div>
+                    <div class="card-subtitle">Espacio de juego y aprendizaje</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+                <p class="desc-text">La ludoteca es un espacio educativo y recreativo donde estudiantes, docentes y comunidad pueden acceder a juegos de mesa, dinámicas grupales y materiales lúdicos para el aprendizaje activo.</p>
+
+                <div class="info-row">
+                    <div class="info-row-icon">✅</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">¿Cómo usarla?</div>
+                        <div class="info-row-text">Solicita un préstamo en el mostrador presentando tu credencial. Los juegos se utilizan dentro del espacio o pueden prestarse por un día.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🎯</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Recursos disponibles</div>
+                        <div class="info-row-text">Juegos de mesa, juegos didácticos, materiales Montessori, rompecabezas, juegos de rol educativo y más.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🕐</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Horario</div>
+                        <div class="info-row-text">Lunes a viernes de 8:00 am a 6:00 pm</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Ubicación</div>
+                        <div class="info-row-text">Edificio C, planta baja</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAC -->
+        <div class="service-card" id="card-sac">
+            <div class="card-header" onclick="toggle('card-sac')">
+                <div class="card-icon" style="background:#e8f5e9;">🌐</div>
+                <div class="card-title-group">
+                    <div class="card-title">SAC — Idiomas</div>
+                    <div class="card-subtitle">Sistema de Autoacceso y Certificación</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+                <p class="desc-text">El SAC (Sistema de Autoacceso) es el departamento de idiomas de UniCaribe, abierto a todos los estudiantes. Ofrece recursos de aprendizaje autónomo en inglés, francés y otras lenguas, además de preparación para certificaciones internacionales.</p>
+
+                <div class="info-row">
+                    <div class="info-row-icon">🌍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Idiomas disponibles</div>
+                        <div class="chips-wrap">
+                            <span class="chip">🇺🇸 Inglés</span>
+                            <span class="chip">🇫🇷 Francés</span>
+                            <span class="chip">🇩🇪 Alemán</span>
+                            <span class="chip">🇧🇷 Portugués</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🏆</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Certificaciones</div>
+                        <div class="info-row-text">Preparación para TOEFL, Cambridge, DELF y otras certificaciones internacionales reconocidas.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🎧</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Recursos disponibles</div>
+                        <div class="info-row-text">Computadoras con software de idiomas, audífonos, material audiovisual, libros de texto y acceso a plataformas en línea.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🕐</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Horario</div>
+                        <table class="horario-table">
+                            <tr><td>Lunes – Viernes</td><td>8:00 am – 8:00 pm</td></tr>
+                            <tr><td>Sábado</td><td>9:00 am – 1:00 pm</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Ubicación</div>
+                        <div class="info-row-text">Edificio E, planta alta · Ext. 245</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ESTACIONAMIENTO -->
+        <div class="service-card" id="card-est">
+            <div class="card-header" onclick="toggle('card-est')">
+                <div class="card-icon" style="background:#ede7f6;">🚗</div>
+                <div class="card-title-group">
+                    <div class="card-title">Estacionamiento</div>
+                    <div class="card-subtitle">Acceso y reglamento vehicular</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+                <div class="info-row">
+                    <div class="info-row-icon">🪪</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Requisitos de acceso</div>
+                        <div class="info-row-text">Credencial vigente de estudiante o empleado · Engomado vehicular actualizado (se tramita en inicio de semestre).</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🅿️</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Zonas disponibles</div>
+                        <div class="chips-wrap">
+                            <span class="chip">Zona A — Estudiantes</span>
+                            <span class="chip">Zona B — Docentes</span>
+                            <span class="chip">Zona C — Administrativos</span>
+                            <span class="chip">Zona D — Visitas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">🕐</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Horario de acceso</div>
+                        <div class="info-row-text">Lunes a sábado · 6:30 am – 10:00 pm</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">⚠️</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Reglamento</div>
+                        <div class="info-row-text">Velocidad máxima 10 km/h · Respetar señalización · La institución no se hace responsable por daños o robos.</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Engomados y trámites</div>
+                        <div class="info-row-text">Servicios Escolares, Edificio A planta baja</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICIOS ESCOLARES -->
+        <div class="service-card" id="card-esc">
+            <div class="card-header" onclick="toggle('card-esc')">
+                <div class="card-icon" style="background:#e3f2fd;">📋</div>
+                <div class="card-title-group">
+                    <div class="card-title">Servicios Escolares</div>
+                    <div class="card-subtitle">Becas, constancias, boletas y más</div>
+                </div>
+                <div class="card-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+
+                <!-- BECAS -->
+                <div class="info-row">
+                    <div class="info-row-icon">💰</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Becas</div>
+                        <div class="info-row-text">Se ofrecen becas por rendimiento académico, situación socioeconómica y convenios institucionales. Consulta convocatorias al inicio de cada semestre.</div>
+                        <div style="margin-top:8px;">
+                            <span class="badge">Excelencia académica</span>
+                            <span class="badge">Socioeconómica</span>
+                            <span class="badge">Deportiva</span>
+                            <span class="badge">Convenio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONSTANCIAS -->
+                <div class="info-row">
+                    <div class="info-row-icon">📄</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Constancias de estudio</div>
+                        <div class="info-row-text">Solicítala en ventanilla presentando credencial vigente. Tiempo de entrega: 24 a 48 horas hábiles. Sin costo adicional.</div>
+                    </div>
+                </div>
+
+                <!-- BOLETAS -->
+                <div class="info-row">
+                    <div class="info-row-icon">📊</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Boletas de calificaciones</div>
+                        <div class="info-row-text">Disponibles al cierre de cada periodo. Puedes solicitarlas en ventanilla o consultarlas en el portal estudiantil con tu usuario institucional.</div>
+                    </div>
+                </div>
+
+                <!-- REINSCRIPCIONES -->
+                <div class="info-row">
+                    <div class="info-row-icon">🔄</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Reinscripciones</div>
+                        <div class="info-row-text">Se realizan al final de cada cuatrimestre según el calendario académico. Verifica fechas en el portal o en el tablero de Servicios Escolares.</div>
+                    </div>
+                </div>
+
+                <!-- CERTIFICADOS -->
+                <div class="info-row">
+                    <div class="info-row-icon">🎓</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Certificados y titulación</div>
+                        <div class="info-row-text">Para iniciar tu proceso de titulación acude con tu historial académico completo y sin adeudos. Tiempo estimado de trámite: 3 a 6 meses.</div>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-row-icon">🕐</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Horario de atención</div>
+                        <table class="horario-table">
+                            <tr><td>Lunes – Viernes</td><td>8:00 am – 7:00 pm</td></tr>
+                            <tr><td>Sábado</td><td>9:00 am – 1:00 pm</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-row-icon">📍</div>
+                    <div class="info-row-content">
+                        <div class="info-row-label">Ubicación</div>
+                        <div class="info-row-text">Edificio A, planta baja · Ventanilla de Control Escolar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+
+    <!-- NAV INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Mapa
+            <div class="nav-dot"></div>
+        </a>
+        <a href="servicios.html" class="nav-item active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Servicios
+            <div class="nav-dot"></div>
+        </a>
+        <a href="ar.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Servicios
+            <div class="nav-dot"></div>
+        </a>
+    </nav>
+    <script src="servicios.js"></script>
+</body>
+</html> 

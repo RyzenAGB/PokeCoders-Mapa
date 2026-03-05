@@ -217,3 +217,57 @@ body {
 .highlight-lugar {
     animation: resplandor 1s ease-in-out 2;
 }
+
+/* ── NAV BAR INFERIOR ── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid #eee;
+    display: flex;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 12px;
+    text-decoration: none;
+    color: #aaa;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    gap: 4px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item.active {
+    color: var(--primary-blue);
+}
+
+.nav-item svg {
+    width: 22px; height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.nav-item.active svg {
+    stroke: var(--accent-teal);
+}
+
+.nav-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    margin: -2px auto 0;
+    opacity: 0;
+}
+
+.nav-item.active .nav-dot { opacity: 1; }

@@ -533,12 +533,6 @@
         </div>
     </main>
 
-    <div class="action-buttons">
-        <button class="btn-ar" onclick="activarAR()">
-            <span>📷 Escanear Entorno</span>
-        </button>
-    </div>
-
     <div id="info-panel" class="info-panel">
         <div class="panel-handle"></div>
         <div class="panel-content">
@@ -547,6 +541,25 @@
             <div id="info-servicios" class="services-grid"></div>
         </div>
     </div>
+
+    <!-- NAV INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Mapa
+            <div class="nav-dot"></div>
+        </a>
+        <a href="servicios.html" class="nav-item active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Servicios
+            <div class="nav-dot"></div>
+        </a>
+        <a href="ar.html" class="nav-item active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Servicios
+            <div class="nav-dot"></div>
+        </a>
+    </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="datos.js"></script>
