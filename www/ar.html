@@ -1,103 +1,134 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Motor AR - PokeCoders</title>
-    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Motor AR - PokeCoders</title>
+
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    /* CSS BLINDADO PARA EVITAR BUGS VISUALES Y FRANJAS BLANCAS */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden; /* Adiós al scroll accidental */
+      background-color: #000; /* Fondo negro por si la cámara tarda en cargar */
+    }
+
+    #vista-ar {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    /* Botón elegante para salir de la AR */
+    #btn-cerrar-ar {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      padding: 15px 30px;
+      background-color: #1b365d; /* Azul Unicaribe */
+      color: white;
+      border-radius: 30px;
+      border: 2px solid #009eb3; /* Borde Cerceta */
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      cursor: pointer;
+    }
     
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      /* Forzar que la cámara ocupe todo el espacio disponible de manera responsiva */
-      #vista-ar, a-scene {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-      }
+    #btn-cerrar-ar:active {
+      transform: translateX(-50%) scale(0.95);
+      background-color: #009eb3;
+    }
+  </style>
+</head>
+<body>
 
-      /* El botón de cerrar debe flotar sobre todo lo demás */
-      #btn-cerrar-ar {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9999;
-        padding: 12px 24px;
-        background-color: #1b365d;
-        color: white;
-        border-radius: 50px;
-        border: none;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        font-size: 16px;
-      }
+  <button id="btn-cerrar-ar" onclick="cerrarAR()">⬅ Volver al Mapa 2D</button>
 
-      /* Asegurar que el canvas de A-Frame sea responsivo */
-      a-scene canvas {
-        width: 100% !important;
-        height: 100% !important;
-      }
-
-      /* Media queries para dispositivos móviles */
-      @media (max-width: 768px) {
-        #btn-cerrar-ar {
-          bottom: 10px;
-          padding: 10px 20px;
-          font-size: 14px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="vista-ar">
-    <button id="btn-cerrar-ar" onclick="desactivarAR()">Cerrar AR</button>
-
+  <div id="vista-ar">
     <a-scene 
-        mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiScanning: #scanning-overlay;" 
-        embedded 
-        color-space="sRGB" 
-        renderer="colorManagement: true, physicallyCorrectLights" 
-        vr-mode-ui="enabled: false" 
-        device-orientation-permission-ui="enabled: false">
+      mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: yes;" 
+      embedded 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-camera>
+      
+      <a-entity mindar-image-target="targetIndex: 0">
         
-        <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-camera>
-        
-        <a-entity mindar-image-target="targetIndex: 0">
-        
-        <a-plane class="clickable" position="-0.4 0.15 0.01" width="0.25" height="0.1" color="#A12E60" opacity="0.9" 
-                onclick="window.parent.mostrarInfo('edificio-d')">
-            <a-text value="INFO EDIF. D" align="center" position="0 0 0.02" scale="0.15 0.15 0.15"></a-text>
+        <a-plane class="clickable" position="-0.45 0.15 0.01" width="0.2" height="0.08" color="#A12E60" opacity="0.9" onclick="comunicarInfo('edificio-d')">
+          <a-text value="INFO EDIF. D" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
         </a-plane>
 
-        <a-plane class="clickable" position="-0.3 -0.1 0.01" width="0.25" height="0.1" color="#EDC045" opacity="0.9" 
-                onclick="window.parent.mostrarInfo('edificio-a')">
-            <a-text value="INFO EDIF. A" align="center" position="0 0 0.02" scale="0.15 0.15 0.15"></a-text>
+        <a-plane class="clickable" position="-0.3 -0.15 0.01" width="0.2" height="0.08" color="#EDC045" opacity="0.9" onclick="comunicarInfo('edificio-a')">
+          <a-text value="INFO EDIF. A" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
         </a-plane>
 
-        <a-plane class="clickable" position="0.1 0.1 0.01" width="0.25" height="0.1" color="#44AC63" opacity="0.9" 
-                onclick="window.parent.mostrarInfo('edificio-c')">
-            <a-text value="INFO EDIF. C" align="center" position="0 0 0.02" scale="0.15 0.15 0.15"></a-text>
+        <a-plane class="clickable" position="-0.05 -0.15 0.01" width="0.2" height="0.08" color="#40832F" opacity="0.9" onclick="comunicarInfo('edificio-b')">
+          <a-text value="INFO EDIF. B" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
         </a-plane>
 
-        </a-entity>
+        <a-plane class="clickable" position="-0.15 0.05 0.01" width="0.2" height="0.08" color="#44AC63" opacity="0.9" onclick="comunicarInfo('edificio-c')">
+          <a-text value="INFO EDIF. C" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+        <a-plane class="clickable" position="0.1 0.35 0.01" width="0.2" height="0.08" color="#914AC8" opacity="0.9" onclick="comunicarInfo('edificio-e')">
+          <a-text value="INFO EDIF. E" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+        <a-plane class="clickable" position="0.3 0.1 0.01" width="0.2" height="0.08" color="#58618D" opacity="0.9" onclick="comunicarInfo('edificio-f')">
+          <a-text value="INFO EDIF. F" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+        <a-plane class="clickable" position="0.5 -0.1 0.01" width="0.2" height="0.08" color="#54A6A9" opacity="0.9" onclick="comunicarInfo('edificio-g')">
+          <a-text value="INFO EDIF. G" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+        <a-plane class="clickable" position="0.3 0.35 0.01" width="0.2" height="0.08" color="#63A02E" opacity="0.9" onclick="comunicarInfo('canchas')">
+          <a-text value="INFO CANCHAS" align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+        <a-plane class="clickable" position="0.2 -0.25 0.01" width="0.2" height="0.08" color="#ADADAD" opacity="0.9" onclick="comunicarInfo('estacionamientos')">
+          <a-text value="INFO ESTAC." align="center" position="0 0 0.01" scale="0.12 0.12 0.12" color="white"></a-text>
+        </a-plane>
+
+      </a-entity>
     </a-scene>
-    </div>
+  </div>
 
-    <script>
-      // Esta función simula la del Dev 3 por ahora, para que pruebes que tus clics funcionan
-      window.mostrarInfo = function(id) {
-        console.log("¡Disparaste el AR para el " + id + "!");
-        alert("La AR detectó el clic en: " + id);
-      };
-    </script>
-  </body>
+  <script>
+    // Esta función puente se asegura de que la AR no se rompa si la pruebas sola.
+    // Si la app está embebida en el index.html principal, llamará a la función del Dev 3.
+    function comunicarInfo(idEdificio) {
+      if (window.parent && typeof window.parent.mostrarInfo === 'function') {
+        // Llama a la función del index.html para abrir la tarjeta de información
+        window.parent.mostrarInfo(idEdificio);
+      } else {
+        // Si estás probando la AR sola en tu celular, te avisa que el clic funciona perfecto
+        alert("Clic detectado en: " + idEdificio + "\n(Para ver los datos reales, abre la app desde el index.html)");
+      }
+    }
+
+    function cerrarAR() {
+      if (window.parent && typeof window.parent.desactivarAR === 'function') {
+        window.parent.desactivarAR();
+      } else {
+        alert("Simulando volver al Mapa 2D");
+      }
+    }
+  </script>
+</body>
 </html>
