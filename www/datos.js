@@ -16,11 +16,11 @@ const universidadData = {
         palabrasClave: "clases, salones, maestros, pizarron, aulas"
     },
     "Edificio_C": {
-        nombre: "Edificio C - Ingenierías",
-        servicios: "Laboratorios de Cómputo, Talleres de Ingeniería, Cubículos.",
+        nombre: "Edificio C - Bienestar universitario",
+        servicios: "Bienestar universitario, ludoteca, SAC.",
         contactos: "ingenierias@unicaribe.mx",
         horarios: "07:00 am - 09:00 pm",
-        palabrasClave: "laboratorio, computadoras, sistemas, software, industrial, ingenierias"
+        palabrasClave: "ludoteca,bienestar, SAC, idiomas"
     },
     "Edificio_D": {
         nombre: "Edificio D - Biblioteca y Auditorio",
