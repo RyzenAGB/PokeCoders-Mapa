@@ -59,6 +59,10 @@ body, html {
   max-height: 100%;
   width: auto;
   height: auto;
+  touch-action: none;
+  user-select: none;
+  transition: transform 0.1s ease-out;
+  transform-origin: center;
 }
 .edificio-interactivo { cursor: pointer; transition: all 0.2s ease-in-out; }
 .edificio-interactivo:active { transform: scale(0.98); }

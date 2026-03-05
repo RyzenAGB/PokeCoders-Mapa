@@ -97,3 +97,44 @@ function cerrarPanel() {
     document.getElementById('info-panel').classList.remove('visible');
     document.querySelectorAll('.edificio-interactivo').forEach(el => el.classList.remove('seleccionado'));
 }
+
+// Variables de estado para el zoom y posición
+let escala = 1;
+const estadoRastreo = { x: 0, y: 0 };
+const mapaSvg = document.querySelector('#vista-mapa svg');
+
+interact('#vista-mapa').gesturable({
+    onmove: function (event) {
+        // 1. Manejo de Zoom (Pinch)
+        escala = escala * (1 + event.ds);
+        
+        // Limites de zoom para que no se pierda el mapa
+        if (escala < 0.8) escala = 0.8;
+        if (escala > 5) escala = 5;
+
+        actualizarTransformacion();
+    }
+}).draggable({
+    onmove: function (event) {
+        // 2. Manejo de Arrastre (Pan)
+        // Solo permitimos arrastrar si hay algo de zoom o para centrar
+        estadoRastreo.x += event.dx;
+        estadoRastreo.y += event.dy;
+
+        actualizarTransformacion();
+    },
+    // Evita que el arrastre interfiera con el click en los edificios
+    inertia: true 
+});
+
+function actualizarTransformacion() {
+    mapaSvg.style.transform = `translate(${estadoRastreo.x}px, ${estadoRastreo.y}px) scale(${escala})`;
+}
+
+// Opcional: Doble Tap para resetear el zoom
+interact('#vista-mapa').on('doubletap', function (event) {
+    escala = 1;
+    estadoRastreo.x = 0;
+    estadoRastreo.y = 0;
+    actualizarTransformacion();
+});
