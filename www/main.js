@@ -4,8 +4,8 @@
 //  en el contenedor y se traducen a coordenadas SVG.
 // ============================================================
 
-const ZOOM_MIN = 0.3;
-const ZOOM_MAX = 6;
+const ZOOM_MIN = 0.2;
+const ZOOM_MAX = 5;
 
 let camX = 0, camY = 0, camScale = 1;
 let wasDrag = false;
@@ -245,7 +245,7 @@ function navegarA(id) {
     if (!el) return;
     try {
         const bb = el.getBBox();
-        centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, 2.8, true);
+        centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, 1.2, true);
     } catch(e) {}
 }
 
@@ -271,12 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (edA) {
             try {
                 const bb = edA.getBBox();
-                centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, 1.8, false);
+                centrarEn(bb.x + bb.width / 5, bb.y + bb.height / 2, 0.3, false);
             } catch(e) {
-                centrarEn(1725, 760, 1.8, false);
+                centrarEn(1725, 760, 4.8, false);
             }
         } else {
-            centrarEn(1725, 760, 1.8, false);
+            centrarEn(1725, 760, 4.8, false);
         }
     });
 
