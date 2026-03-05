@@ -225,6 +225,20 @@ const universidadData = {
         horarios: "07:00 am - 09:00 pm",
         palabrasClave: "baño, sanitarios, wc, mingitorio"
     },
+    "Baño_E": {
+        nombre: "Sanitarios Zona E",
+        servicios: "Baños para hombres, mujeres y personas con discapacidad.",
+        contactos: "mantenimiento@unicaribe.mx",
+        horarios: "07:00 am - 07:00 pm",
+        palabrasClave: "baño, sanitarios, wc, mingitorio"
+    },
+    "Baños_E": {
+        nombre: "Sanitarios Edificio E",
+        servicios: "Baños para hombres, mujeres y personas con discapacidad.",
+        contactos: "mantenimiento@unicaribe.mx",
+        horarios: "07:00 am - 07:00 pm",
+        palabrasClave: "baño, sanitarios, wc, mingitorio"
+    },
     "Baño_CE": {
         nombre: "Sanitarios Zona C-E",
         servicios: "Baños para hombres, mujeres y personas con discapacidad.",
