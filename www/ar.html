@@ -7,38 +7,58 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
     <style>
-      body { margin: 0; overflow: hidden; }
-      /* Botón de prueba para salir de la AR */
-      #btn-cerrar-ar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 15px 30px; background: #1b365d; color: white; border-radius: 20px; font-weight: bold; border: none; }
-        /* Forzar que la cámara ocupe todo el espacio disponible */
-        #vista-ar, a-scene {
-            width: 100vw;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-        }
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      /* Forzar que la cámara ocupe todo el espacio disponible de manera responsiva */
+      #vista-ar, a-scene {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+      }
 
-        /* El botón de cerrar debe flotar sobre todo lo demás */
+      /* El botón de cerrar debe flotar sobre todo lo demás */
+      #btn-cerrar-ar {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        padding: 12px 24px;
+        background-color: #1b365d;
+        color: white;
+        border-radius: 50px;
+        border: none;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        font-size: 16px;
+      }
+
+      /* Asegurar que el canvas de A-Frame sea responsivo */
+      a-scene canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      /* Media queries para dispositivos móviles */
+      @media (max-width: 768px) {
         #btn-cerrar-ar {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999; /* Muy alto para que no lo tape la cámara */
-            padding: 12px 24px;
-            background-color: #1b365d; /* Azul institucional */
-            color: white;
-            border-radius: 50px;
-            border: none;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+          bottom: 10px;
+          padding: 10px 20px;
+          font-size: 14px;
         }
+      }
     </style>
   </head>
   <body>
-        <div id="vista-ar">
+    <div id="vista-ar">
     <button id="btn-cerrar-ar" onclick="desactivarAR()">Cerrar AR</button>
 
     <a-scene 
