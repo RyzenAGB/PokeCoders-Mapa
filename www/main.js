@@ -138,3 +138,22 @@ interact('#vista-mapa').on('doubletap', function (event) {
     estadoRastreo.y = 0;
     actualizarTransformacion();
 });
+
+// Esta función debe estar en tu script principal
+function mostrarInfo(idEdificio) {
+    // 1. Buscar el edificio en la base de datos del archivo datos.js
+    const edificio = universidadData[idEdificio];
+
+    if (edificio) {
+        // 2. Insertar los datos en el Modal
+        document.getElementById('modal-titulo').innerText = edificio.nombre; //
+        document.getElementById('modal-servicios').innerText = edificio.servicios; //
+        document.getElementById('modal-contacto').innerText = edificio.contactos; //
+        document.getElementById('modal-horarios').innerText = edificio.horarios; //
+
+        // 3. Mostrar el modal (animación de subida)
+        document.getElementById('modal-info').classList.add('activo');
+    } else {
+        console.error("No se encontraron datos para el ID: " + idEdificio);
+    }
+}
