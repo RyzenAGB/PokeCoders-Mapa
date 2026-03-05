@@ -1,0 +1,39 @@
+body { 
+    font-family: sans-serif; 
+    margin: 0;
+    padding: 0;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background: #f0f0f0;
+    overflow-x: hidden; /* Evita scroll lateral */
+}
+
+/* Contenedor de mensajes optimizado para pulgares */
+#mensaje {
+    margin: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    min-height: 1.5em;
+}
+
+svg {
+    /* 3. El SVG ahora ocupa el ancho del dispositivo y mantiene proporción */
+    width: 100%;
+    height: auto;
+    touch-action: manipulation; /* Optimiza el lag del click en móvil */
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 4. En móvil no hay 'hover', usamos estados activos para feedback visual */
+#Edificio_C:active { fill: #ff4d4d; }
+#Areas_Verdes:active { fill: #2ecc71; }
+#Edificio_E:active { fill: #3498db; }
+
+/* Estilo para resaltar la selección (opcional) */
+.seleccionado {
+    stroke: #000 !important;
+    stroke-width: 4px !important;
+}
