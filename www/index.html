@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mapa Uni AR</title>
-  <link rel="stylesheet" href="estilos.css">
-  
-  <script src="datos.js"></script>
-
-  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Mapa Móvil</title>
 </head>
 <body>
-
-  <div class="search-container">
-    <input type="text" id="buscador" placeholder="Buscar laboratorio, edificio, servicio...">
-    <button onclick="buscarServicio()">Buscar</button>
-  </div>
+    <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar laboratorio, edificio, servicio...">
+        <button onclick="buscarServicio()">Buscar</button>
+    </div>
 
   <div id="vista-mapa">
+        <div id="mensaje">Inicio</div>
+        <svg viewBox="0 0 1150 890" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="Grupo1" clip-path="url(#clip0_8_23)">
+            <path id="Edificio_C" d="M697 562.5L675 617.5L599.5 578L500.5 523L401 461L333 413L366.5 366L474 437.5L604.5 513L697 562.5Z" fill="#C88D4A" stroke="#C88D4A" stroke-width="2"/>
+            <path id="Edificio_E" d="M306 324L271 371L218 331.5L131 259L53 187L-26.5 108.5L17 67.5L99 148.5L208.5 245L306 324Z" fill="#914AC8" stroke="#914AC8" stroke-width="2"/>
+            <g id="Areas_Verdes">
+                <path id="Vector" d="M383.912 296.379L343.912 350.379L378.912 376.379L484.412 444.379L602.912 512.379L722.912 574.879L747.912 515.379L689.412 484.379L600.412 433.879L493.412 367.379L383.912 296.379Z" fill="#599275"/>
+                <path id="Vector_2" d="M51.412 1.37946L1.41199 46.8795L50.912 101.379L111.912 159.879L184.412 222.879L265.412 289.879L332.912 341.379L371.412 282.379L298.912 226.379L210.912 152.379L123.412 72.8795L51.412 1.37946Z" fill="#599275"/>
+                <path id="Vector_3" d="M763.912 520.879L737.412 579.379L807.412 613.379L888.912 648.879L980.912 683.379L1055.91 707.879L1130.41 728.879L1147.91 663.379L1105.91 652.379L998.412 618.379L884.912 575.379L825.412 550.379L763.912 520.879Z" fill="#599275"/>
+                <path id="Vector_4" d="M769.912 817.879L807.412 722.379L823.412 729.379L821.241 737.791C820.024 742.509 819.183 747.317 818.729 752.168L818.636 753.161C818.154 758.295 818.162 763.463 818.659 768.596L818.78 769.844C819.2 774.191 820.037 778.488 821.277 782.675C822.696 787.464 824.636 792.082 827.061 796.448L827.201 796.7C829.668 801.14 832.604 805.303 835.96 809.116L841.912 815.879L844.434 818.087C848.078 821.275 852.014 824.112 856.191 826.56C861.651 829.761 867.485 832.276 873.56 834.048L876.412 834.879L881.852 836.069C888.872 837.605 896.036 838.379 903.222 838.379H904.912H907.267C912.342 838.379 917.394 837.711 922.294 836.392C926.03 835.386 929.655 834.008 933.116 832.277L934.912 831.379L941.564 827.146C948.104 822.985 954.099 818.024 959.412 812.379L966.412 803.379L971.912 794.379L975.912 785.879L985.412 788.879L951.912 888.379L769.912 817.879Z" fill="#599275"/>
+                <path id="Areas_Verdes_2" d="M333 589L389.21 508L406.5 520C404.769 523.322 403.368 526.819 401.67 530.159C401.628 530.242 401.586 530.326 401.545 530.411C400.319 532.956 400.139 535.873 399.42 538.604L399.25 539.25C398.418 542.411 397.849 545.637 397.352 548.868C396.778 552.601 396.157 556.444 396.5 560V567.5C396.92 571.847 398.351 586.039 401 592C403 596.5 405 604 408.5 607.5L409.51 608.602C412.493 611.856 414.856 615.574 417.922 618.751C420.609 621.536 423.56 624.17 426.656 626.492L431.791 630.343C433.261 631.445 434.827 632.413 436.47 633.235L439.781 634.89C439.926 634.963 440.08 635.071 440.206 635.174C441.904 636.567 459.083 642.492 461.23 642.951C461.702 643.051 462.193 643.171 462.705 643.314C462.899 643.368 463.102 643.398 463.304 643.398H478C481.656 643.398 485.342 643.81 488.977 643.416C497.737 642.467 509.298 638.492 494 643.398L496.107 642.434C496.701 642.163 497.321 641.954 497.957 641.809C498.65 641.651 500.48 641.278 499.95 641.752C499.307 642.327 488.401 644.02 492.5 642.914C495.619 642.072 496.93 644.19 499.299 643.889C500.307 643.761 500.941 642.815 501.139 641.818C501.363 640.69 502.161 639.76 503.242 639.366L506.371 638.229C506.79 638.076 507.208 637.888 507.6 637.676C526.525 627.466 527.755 625.822 533 620.236L538.5 615L540.257 612.95C543.082 609.654 545.67 606.162 548 602.5L567 611L519.578 699.5L333 589Z" fill="#599275" stroke="#599275" stroke-width="2"/>
+            </g>
+        </g>
+        <defs>
+            <clipPath id="clip0_8_23">
+                <rect width="1150" height="890" fill="white"/>
+            </clipPath>
+        </defs>
+    </svg>
     </div>
 
   <div id="vista-ar" style="display: none; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 50;">
@@ -39,59 +52,6 @@
       <p><strong>🕒 Horarios:</strong> <span id="modal-horarios"></span></p>
     </div>
   </div>
-
-  <script>
-    function mostrarInfo(idEdificio) {
-      // 1. Obtener datos (Asegúrense de que universidadData exista en su datos.js)
-      const datos = universidadData[idEdificio];
-      
-      if(datos) {
-        // 2. Llenar los campos
-        document.getElementById('modal-titulo').innerText = datos.nombre;
-        document.getElementById('modal-servicios').innerText = datos.servicios;
-        document.getElementById('modal-contacto').innerText = datos.contactos;
-        document.getElementById('modal-horarios').innerText = datos.horarios;
-        
-        // 3. Deslizar el modal hacia arriba
-        document.getElementById('modal-info').classList.add('activo');
-      }
-    }
-
-    function cerrarModal() {
-      // Deslizar el modal hacia abajo
-      document.getElementById('modal-info').classList.remove('activo');
-    }
-
-    function activarAR() {
-      // Ocultar mapa y buscador, mostrar cámara
-      document.getElementById('vista-mapa').style.display = 'none';
-      document.querySelector('.search-container').style.display = 'none';
-      document.getElementById('vista-ar').style.display = 'block';
-      
-      // Cambiar la función del botón flotante para que ahora sirva para "Regresar"
-      const btn = document.querySelector('.fab-ar');
-      btn.innerHTML = '⬅ Volver al Mapa';
-      btn.style.background = 'var(--azul-uni)';
-      btn.onclick = desactivarAR;
-    }
-
-    function desactivarAR() {
-      // Restaurar mapa y ocultar cámara
-      document.getElementById('vista-mapa').style.display = 'flex';
-      document.querySelector('.search-container').style.display = 'flex';
-      document.getElementById('vista-ar').style.display = 'none';
-      
-      // Restaurar el botón original
-      const btn = document.querySelector('.fab-ar');
-      btn.innerHTML = '📷 Escanear Mapa';
-      btn.style.background = 'var(--teal-uni)';
-      btn.onclick = activarAR;
-    }
-    
-    // Función vacía para el buscador (Dev 3 puede programar la lógica aquí)
-    function buscarServicio() {
-        alert("Buscando: " + document.getElementById('buscador').value);
-    }
-  </script>
+    <script src="main.js"></script>
 </body>
 </html>
