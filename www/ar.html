@@ -13,17 +13,8 @@
       schema: {type: 'string'},
       init: function () {
         const idEdificio = this.data;
-        const el = this.el;
-
-        // Escucha el toque de pantalla en celulares (Touch)
-        el.addEventListener('touchstart', function(e) {
-          e.preventDefault(); 
-          mostrarInfo(idEdificio);
-        });
-
-        // Escucha el clic con el mouse (PC)
-        el.addEventListener('click', function(e) {
-          e.preventDefault();
+        // A-Frame transforma tu toque de celular en un 'click' automáticamente
+        this.el.addEventListener('click', function(e) {
           mostrarInfo(idEdificio);
         });
       }
@@ -38,10 +29,13 @@
       width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 10;
     }
     
-    /* 🚨 ESTO ES LO QUE ARREGLA EL BUG: Deja pasar el dedo hacia el 3D 🚨 */
-    .mindar-ui-overlay, .mindar-ui-scanning {
+    /* 🚨 EL FIX MAESTRO: Desintegramos las capas invisibles de MindAR 🚨 */
+    .mindar-ui-overlay, .mindar-ui-scanning, .mindar-ui-compatibility {
+      display: none !important;
       pointer-events: none !important;
     }
+    
+    /* Aseguramos que el Canvas 3D reciba el toque de tu dedo */
     .a-canvas {
       pointer-events: auto !important;
     }
@@ -51,7 +45,6 @@
       position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9999;
       padding: 15px 30px; background-color: #1b365d; color: white; border-radius: 30px;
       border: 2px solid #009eb3; font-size: 16px; font-weight: bold; box-shadow: 0 6px 15px rgba(0,0,0,0.4); cursor: pointer;
-      pointer-events: auto;
     }
     #btn-cerrar-ar:active { transform: translateX(-50%) scale(0.95); background-color: #009eb3; }
 
@@ -78,7 +71,7 @@
 
   <div id="modal-info">
     <button class="modal-close" onclick="cerrarModal()">✕</button>
-    <h2 id="modal-titulo">Información del Edificio</h2>
+    <h2 id="modal-titulo">Cargando...</h2>
     <p><span class="modal-label">Servicios:</span><br><span id="modal-servicios"></span></p>
     <p><span class="modal-label">Contactos:</span><br><span id="modal-contacto"></span></p>
     <p><span class="modal-label">Horarios:</span><br><span id="modal-horarios"></span></p>
@@ -86,11 +79,12 @@
 
   <div id="vista-ar">
     <a-scene 
+      cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable"
       mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: no;" 
       embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
-      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       
       <a-entity mindar-image-target="targetIndex: 0">
         
@@ -133,18 +127,17 @@
   <script src="datos.js"></script>
   <script>
     function cerrarAR() {
-      // Si la app principal maneja esto:
       if (window.parent && typeof window.parent.desactivarAR === 'function') {
         window.parent.desactivarAR();
       } else {
-        // Redirección segura si se abre el ar.html suelto
         window.location.href = 'index.html'; 
       }
     }
 
-    // Esta función recibe el ID desde el evento de toque
     function mostrarInfo(idEdificio) {
-      console.log("¡Toque detectado en!", idEdificio);
+      // 🚨 AGREGUÉ ESTA ALERTA: Si ves esto en tu pantalla, el clic funcionó. 
+      // Si la alerta sale pero el modal no, el error está en los datos.
+      console.log("Toque en: " + idEdificio);
       
       const edificio = universidadData[idEdificio];
 
@@ -154,10 +147,9 @@
         document.getElementById('modal-contacto').innerText = edificio.contactos;
         document.getElementById('modal-horarios').innerText = edificio.horarios;
 
-        // Anima el modal hacia arriba
         document.getElementById('modal-info').classList.add('activo');
       } else {
-        console.error("No se encontraron datos en datos.js para: " + idEdificio);
+        alert("🚨 Bug de datos: No se encontró '" + idEdificio + "' en datos.js");
       }
     }
 
