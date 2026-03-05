@@ -5,7 +5,7 @@
 const SVG_W = 2477;
 const SVG_H = 1595;
 const ZOOM_MIN = 0.4;
-const ZOOM_MAX = 6;
+const ZOOM_MAX = 8;
 
 let camX = 0, camY = 0, camScale = 1;
 let wasDrag = false;
@@ -124,8 +124,11 @@ function initTouch() {
 // Coordenadas en espacio SVG (x, y, ancho, alto)
 function crearHotspots() {
     const layer = document.getElementById('mapa-layer');
+    const svg = document.querySelector('#vista-mapa svg');
+    if (!layer || !svg) return;
 
-    const zonas = {
+    // manual bounding boxes for elements that need fine-tuning
+    const manual = {
         "Edificio_A":  { x: 1550, y: 620,  w: 350, h: 280 },
         "Edificio_B":  { x: 910,  y: 680,  w: 420, h: 260 },
         "Edificio_C":  { x: 490,  y: 430,  w: 440, h: 280 },
@@ -135,6 +138,17 @@ function crearHotspots() {
         "Cafetería":   { x: 1260, y: 560,  w: 145, h: 135 },
         "Baños_Vec":   { x: 1200, y: 870,  w: 200, h: 110 },
     };
+
+    // build zonas by copying manual entries and adding computed ones
+    const zonas = { ...manual };
+
+    Object.keys(universidadData).forEach(id => {
+        if (zonas[id]) return; // already defined manually
+        const el = svg.getElementById(id);
+        if (!el) return;
+        const bbox = el.getBBox();
+        zonas[id] = { x: bbox.x, y: bbox.y, w: bbox.width, h: bbox.height };
+    });
 
     Object.entries(zonas).forEach(([id, p]) => {
         if (!universidadData[id]) return;
