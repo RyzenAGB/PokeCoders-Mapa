@@ -13,29 +13,37 @@
       schema: {type: 'string'},
       init: function () {
         const idEdificio = this.data;
-        // A-Frame transforma tu toque de celular en un 'click' automáticamente
+        
+        // Escucha el clic normal
         this.el.addEventListener('click', function(e) {
-          mostrarInfo(idEdificio);
+          e.preventDefault();
+          window.mostrarInfo(idEdificio);
+        });
+
+        // Respaldo de fuerza bruta para toques de celular rebeldes
+        this.el.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          window.mostrarInfo(idEdificio);
         });
       }
     });
   </script>
 
   <style>
+    /* 🚨 FIX 1: Bloqueamos la acción del navegador para que no robe el toque 🚨 */
     html, body {
       margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; background-color: #000;
+      touch-action: none; 
     }
     #vista-ar {
       width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 10;
     }
     
-    /* 🚨 EL FIX MAESTRO: Desintegramos las capas invisibles de MindAR 🚨 */
+    /* Desintegramos cualquier barrera invisible de MindAR */
     .mindar-ui-overlay, .mindar-ui-scanning, .mindar-ui-compatibility {
       display: none !important;
       pointer-events: none !important;
     }
-    
-    /* Aseguramos que el Canvas 3D reciba el toque de tu dedo */
     .a-canvas {
       pointer-events: auto !important;
     }
@@ -48,7 +56,7 @@
     }
     #btn-cerrar-ar:active { transform: translateX(-50%) scale(0.95); background-color: #009eb3; }
 
-    /* MODAL DE INFORMACIÓN */
+    /* MODAL BLANCO */
     #modal-info {
       position: fixed; bottom: -100%; left: 0; right: 0; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
       border-radius: 20px 20px 0 0; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
@@ -61,30 +69,27 @@
       position: absolute; top: 15px; right: 15px; background: #009eb3; color: white; border: none;
       border-radius: 50%; width: 35px; height: 35px; font-size: 20px; cursor: pointer; font-weight: bold;
     }
-    .modal-close:active { transform: scale(0.9); }
-    .modal-label { font-weight: bold; color: #1b365d; margin-top: 10px; }
   </style>
 </head>
 <body>
 
-  <button id="btn-cerrar-ar" onclick="cerrarAR()">⬅ Volver al Mapa 2D</button>
+  <button id="btn-cerrar-ar" onclick="window.location.href='index.html'">⬅ Volver al Mapa 2D</button>
 
   <div id="modal-info">
     <button class="modal-close" onclick="cerrarModal()">✕</button>
     <h2 id="modal-titulo">Cargando...</h2>
-    <p><span class="modal-label">Servicios:</span><br><span id="modal-servicios"></span></p>
-    <p><span class="modal-label">Contactos:</span><br><span id="modal-contacto"></span></p>
-    <p><span class="modal-label">Horarios:</span><br><span id="modal-horarios"></span></p>
+    <p><strong style="color: #1b365d;">Servicios:</strong><br><span id="modal-servicios"></span></p>
+    <p><strong style="color: #1b365d;">Contactos:</strong><br><span id="modal-contacto"></span></p>
+    <p><strong style="color: #1b365d;">Horarios:</strong><br><span id="modal-horarios"></span></p>
   </div>
 
   <div id="vista-ar">
     <a-scene 
-      cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable"
       mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: no;" 
       embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-camera>
       
       <a-entity mindar-image-target="targetIndex: 0">
         
@@ -126,19 +131,14 @@
 
   <script src="datos.js"></script>
   <script>
-    function cerrarAR() {
-      if (window.parent && typeof window.parent.desactivarAR === 'function') {
-        window.parent.desactivarAR();
-      } else {
-        window.location.href = 'index.html'; 
+    // Se asegura de que la función sea global (window)
+    window.mostrarInfo = function(idEdificio) {
+      // Intentar leer la base de datos
+      if (typeof universidadData === 'undefined') {
+        alert("🚨 Error Crítico: No se pudo cargar el archivo datos.js");
+        return;
       }
-    }
 
-    function mostrarInfo(idEdificio) {
-      // 🚨 AGREGUÉ ESTA ALERTA: Si ves esto en tu pantalla, el clic funcionó. 
-      // Si la alerta sale pero el modal no, el error está en los datos.
-      console.log("Toque en: " + idEdificio);
-      
       const edificio = universidadData[idEdificio];
 
       if (edificio) {
@@ -149,13 +149,13 @@
 
         document.getElementById('modal-info').classList.add('activo');
       } else {
-        alert("🚨 Bug de datos: No se encontró '" + idEdificio + "' en datos.js");
+        alert("🚨 Bug: Se hizo clic, pero no se halló el ID: '" + idEdificio + "' en datos.js");
       }
-    }
+    };
 
-    function cerrarModal() {
+    window.cerrarModal = function() {
       document.getElementById('modal-info').classList.remove('activo');
-    }
+    };
   </script>
 </body>
 </html>
