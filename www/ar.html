@@ -48,14 +48,6 @@
       pointer-events: auto !important;
     }
 
-    /* BOTÓN VOLVER */
-    #btn-cerrar-ar {
-      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9999;
-      padding: 15px 30px; background-color: #1b365d; color: white; border-radius: 30px;
-      border: 2px solid #009eb3; font-size: 16px; font-weight: bold; box-shadow: 0 6px 15px rgba(0,0,0,0.4); cursor: pointer;
-    }
-    #btn-cerrar-ar:active { transform: translateX(-50%) scale(0.95); background-color: #009eb3; }
-
     /* MODAL BLANCO */
     #modal-info {
       position: fixed; bottom: -100%; left: 0; right: 0; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
@@ -72,9 +64,6 @@
   </style>
 </head>
 <body>
-
-  <button id="btn-cerrar-ar" onclick="window.location.href='index.html'">⬅ Volver al Mapa 2D</button>
-
   <div id="modal-info">
     <button class="modal-close" onclick="cerrarModal()">✕</button>
     <h2 id="modal-titulo">Cargando...</h2>
@@ -128,7 +117,26 @@
       </a-entity>
     </a-scene>
   </div>
+   <!-- NAV INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Mapa</span>
+            <div class="nav-dot"></div>
+        </a>
 
+        <a href="ar.html" class="nav-item">
+            <i class="fa-solid fa-vr-cardboard"></i>
+            <span>AR</span>
+            <div class="nav-dot"></div>
+        </a>
+
+        <a href="servicios.html" class="nav-item active">
+            <i class="fa-solid fa-bars"></i>
+            <span>Servicios</span>
+            <div class="nav-dot"></div>
+        </a>
+    </nav>
   <script src="datos.js"></script>
   <script>
     // Se asegura de que la función sea global (window)
