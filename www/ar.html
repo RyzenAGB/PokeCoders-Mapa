@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Motor AR - PokeCoders</title>
+  <link rel="stylesheet" href="servicios.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -64,6 +66,7 @@
   </style>
 </head>
 <body>
+
   <div id="modal-info">
     <button class="modal-close" onclick="cerrarModal()">✕</button>
     <h2 id="modal-titulo">Cargando...</h2>
@@ -117,26 +120,6 @@
       </a-entity>
     </a-scene>
   </div>
-   <!-- NAV INFERIOR -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>Mapa</span>
-            <div class="nav-dot"></div>
-        </a>
-
-        <a href="ar.html" class="nav-item">
-            <i class="fa-solid fa-vr-cardboard"></i>
-            <span>AR</span>
-            <div class="nav-dot"></div>
-        </a>
-
-        <a href="servicios.html" class="nav-item active">
-            <i class="fa-solid fa-bars"></i>
-            <span>Servicios</span>
-            <div class="nav-dot"></div>
-        </a>
-    </nav>
   <script src="datos.js"></script>
   <script>
     // Se asegura de que la función sea global (window)
@@ -165,5 +148,26 @@
       document.getElementById('modal-info').classList.remove('activo');
     };
   </script>
+
+  <!-- NAV INFERIOR -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>Mapa</span>
+      <div class="nav-dot"></div>
+    </a>
+
+    <a href="ar.html" class="nav-item active">
+      <i class="fa-solid fa-vr-cardboard"></i>
+      <span>AR</span>
+      <div class="nav-dot"></div>
+    </a>
+
+    <a href="servicios.html" class="nav-item">
+      <i class="fa-solid fa-bars"></i>
+      <span>Servicios</span>
+      <div class="nav-dot"></div>
+    </a>
+  </nav>
 </body>
 </html>
