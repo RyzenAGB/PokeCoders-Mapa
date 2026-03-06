@@ -334,20 +334,52 @@ document.addEventListener('DOMContentLoaded', () => {
     initMapClick();
     initMapTap();
 
-    // Vista inicial: centrada en Edificio_A
-    requestAnimationFrame(() => {
+    // Vista inicial: destino desde servicios.html, o Edificio_A por defecto
+    function aplicarVistaInicial() {
+        const destinoRaw = sessionStorage.getItem('mapaDestino');
+        if (destinoRaw) {
+            sessionStorage.removeItem('mapaDestino');
+            try {
+                const { id, svgX, svgY, zoom } = JSON.parse(destinoRaw);
+                // Reintentar hasta que el SVG esté listo y getBBox devuelva dimensiones reales
+                function intentarZoom(intentos) {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        try {
+                            const bb = el.getBBox();
+                            if (bb.width > 0 && bb.height > 0) {
+                                centrarEn(bb.x + bb.width / 2, bb.y + bb.height / 2, zoom, true);
+                                setTimeout(() => {
+                                    el.classList.add('highlight-lugar');
+                                    setTimeout(() => el.classList.remove('highlight-lugar'), 3000);
+                                }, 150);
+                                return;
+                            }
+                        } catch(e) {}
+                    }
+                    if (intentos > 0) setTimeout(() => intentarZoom(intentos - 1), 100);
+                    else centrarEn(svgX, svgY, zoom, true); // fallback con coordenadas fijas
+                }
+                intentarZoom(10);
+                return;
+            } catch(e) { console.warn('Error leyendo mapaDestino:', e); }
+        }
+
+        // Default: vista general del campus
         const edA = document.getElementById('Edificio_A');
         if (edA) {
             try {
                 const bb = edA.getBBox();
                 centrarEn(bb.x + bb.width / 5, bb.y + bb.height / 2, 0.3, false);
             } catch(e) {
-                centrarEn(1725, 760, 4.8, false);
+                centrarEn(1725, 760, 0.3, false);
             }
         } else {
-            centrarEn(1725, 760, 4.8, false);
+            centrarEn(1725, 760, 0.3, false);
         }
-    });
+    }
+
+    requestAnimationFrame(aplicarVistaInicial);
 
     // Buscador con Enter
     document.getElementById('buscador')?.addEventListener('keydown', e => {

@@ -109,6 +109,13 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+.card-header i {
+    display: block;
+    font-size: 40px; /* Tamaño del icono */
+    margin-bottom: 3px;
+    color: var(--primary-blue);
+}
+
 .card-icon {
     width: 46px;
     height: 46px;
@@ -322,6 +329,19 @@ body {
     margin-bottom: 12px;
 }
 
+.btn-ver-mapa {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    background: #0e153b;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-size: 12px;
+}
+
 /* ── SERVICIOS CHIPS ── */
 .chips-wrap {
     display: flex;
@@ -370,6 +390,8 @@ body {
             display: block;
             font-size: 20px; /* Tamaño del icono */
             margin-bottom: 3px;
+            color: var(--primary-blue);
+
     }
 
 .nav-item.active {
